@@ -1,0 +1,11 @@
+services:
+  postgres:
+    image: postgres
+    restart: always
+    container_name: postgres
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_PASSWORD: sql123 
+      POSTGRES_DB: postgres
+
