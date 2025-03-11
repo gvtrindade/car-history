@@ -11,7 +11,9 @@ export async function fetchEntriesByCarAndUserByYear(
   const entries = await sql<Entry[]>`
     SELECT * FROM entries 
     WHERE car_id IN (SELECT id FROM cars WHERE id = ${carId} AND user_id = ${userId}) 
-    AND date_part('year', date) = ${year}`;
+      AND date_part('year', date) = ${year}
+    ORDER BY date desc
+  `;
   return entries;
 }
 
@@ -22,7 +24,8 @@ export async function fetchEntryRecordYearByCarId(
   let years = [];
   const row = await sql`
     SELECT ARRAY_AGG(DISTINCT EXTRACT(YEAR FROM date)) AS years FROM entries 
-    WHERE car_id IN (SELECT id FROM cars WHERE id = ${carId} AND user_id = ${userId})`;
+    WHERE car_id IN (SELECT id FROM cars WHERE id = ${carId} AND user_id = ${userId})
+  `;
 
   if (row.length > 0 && row[0].years !== null) {
     years = row[0].years;
@@ -40,7 +43,7 @@ export async function insertEntry(entry: any, carId: string) {
   }
 }
 
-export async function updateEntry(entry: any, carId: string) {
+export async function updateEntry(entry: Entry, userId: string) {
   const row = await sql`
     UPDATE entries
     SET description = ${entry.description},
@@ -49,16 +52,19 @@ export async function updateEntry(entry: any, carId: string) {
       date = ${entry.date},
       place = ${entry.place},
       tags = ${entry.tags}
-    WHERE id = ${entry.id} AND car_id = ${carId}
-`;
+    WHERE id = ${entry.id} 
+      AND car_id IN (SELECT id FROM cars WHERE id = ${entry.car_id} AND user_id = ${userId})
+  `;
   if (!row) {
     throw new Error("Could not update entry");
   }
 }
 
-export async function deleteEntry(entryId: number, carId: string) {
+export async function deleteEntry(entry: Entry, userId: string) {
   const row = await sql`
-    DELETE FROM entries WHERE id = ${entryId} AND car_id = ${carId}
+    DELETE FROM entries 
+    WHERE id = ${entry.id} 
+      AND car_id IN (SELECT id FROM cars WHERE id = ${entry.car_id} AND user_id = ${userId})
   `;
   if (!row) {
     throw new Error("Could not delete entry");

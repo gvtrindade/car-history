@@ -5,6 +5,7 @@ import {
   insertEntry,
   updateEntry,
 } from "@/app/lib/data/entry";
+import { Entry } from "../definitions";
 
 // TODO: get user id via session
 const userId = "4f245a8f-07ec-4085-9870-7bbd8ee807ab";
@@ -26,10 +27,11 @@ export async function postEntry(entry: any, carId: string) {
   await insertEntry(entry, carId);
 }
 
-export async function putEntry(entry: any, carId: string) {
-  await updateEntry(entry, carId);
+export async function putEntry(entry: Entry) {
+  // Get user credentials
+  await updateEntry(entry, userId);
 }
 
-export async function deleteEntryById(entryId: number, carId: string) {
-  await deleteEntry(entryId, carId);
+export async function deleteEntryById(entry: Entry) {
+  await deleteEntry(entry, userId);
 }

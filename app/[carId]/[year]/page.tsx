@@ -1,7 +1,7 @@
 import { getCarById } from "@/app/lib/action/car";
 import { getEntriesByCarAndYear } from "@/app/lib/action/entry";
 import { Car, Entry } from "@/app/lib/definitions";
-import CarEntries from "@/app/ui/CarEntries/carEntries";
+import EntryList from "@/app/ui/EntryLIst/entryList";
 import EntryForm from "@/app/ui/entryForm";
 
 export default async function Page({
@@ -18,7 +18,7 @@ export default async function Page({
       <h2>{car.name}</h2>
 
       <EntryForm carId={carId} />
-      <CarEntries car={car} year={year} />
+      <EntryList car={car} year={year} />
     </>
   );
 }

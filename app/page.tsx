@@ -1,22 +1,22 @@
 import { getCarById, getCarsByUser } from "@/app/lib/action/car";
 import { Car } from "@/app/lib/definitions";
-import CarEntries from "@/app/ui/CarEntries/carEntries";
+import EntryList from "@/app/ui/EntryLIst/entryList";
+import CarSelect from "@/app/ui/carSelect";
 import EntryForm from "@/app/ui/entryForm";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { cookies } from "next/headers";
 
-export default async function Page() {
-  // Get car from local storage
-  // Add default for when no car is in localStorage
+type Props = {
+  searchParams: Promise<{ [key: string]: string }>;
+};
+
+export default async function Home({ searchParams }: Props) {
+  const cookieStore = await cookies();
+  const savedId = cookieStore.has("carId") ? cookieStore.get("carId")?.value : null;
+  const { carId = savedId } = await searchParams;
 
   const year = new Date().getFullYear();
-  const car: Car = await getCarById();
+  const car: Car = await getCarById(carId);
   const userCars: Car[] = await getCarsByUser();
 
   return (
@@ -26,26 +26,11 @@ export default async function Page() {
           <EntryForm carId={car.id} />
 
           <div className="grid grid-cols-2 gap-4 m-4">
-            <Select defaultValue={car.id}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Car" />
-              </SelectTrigger>
-              <SelectContent>
-                {userCars.map((car, key) => (
-                  <SelectItem value={car.id} key={key}>
-                    {car.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
+            <CarSelect defaultId={car.id} options={userCars} />
             <Button>Export</Button>
           </div>
 
-          <CarEntries
-            car={car}
-            year={year}
-          />
+          <EntryList car={car} year={year} />
         </>
       ) : (
         <h3> Register a car to view entries </h3>

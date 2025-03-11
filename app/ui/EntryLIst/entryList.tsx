@@ -1,9 +1,5 @@
-import {
-  deleteEntryById,
-  getEntriesByCarAndYear,
-} from "@/app/lib/action/entry";
+import { getEntriesByCarAndYear } from "@/app/lib/action/entry";
 import { Car, Entry } from "@/app/lib/definitions";
-import ViewRow from "@/app/ui/CarEntries/viewRow";
 import {
   Table,
   TableBody,
@@ -12,23 +8,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import EntryRow from "./entryRow";
 
-let isEditing = false;
+let previousDate: Date | null = null;
 
-const setIsEditing = (state: boolean) => {
-  isEditing = state;
-};
-
-async function confirmDelete(entry: Entry) {
-  try {
-    await deleteEntryById(entry.id, entry.car.id);
-  } catch (error) {
-    console.log(error);
-    // Show delete error toast
+function createRow(entry: Entry, key: number) {
+  let hideDate = false;
+  if (previousDate) {
+    hideDate = previousDate.getDate() === entry.date.getDate();
   }
+  previousDate = entry.date;
+
+  return <EntryRow entry={entry} key={key} hideDate={hideDate} />;
 }
 
-export default async function CarEntries({
+export default async function EntryList({
   car,
   year,
 }: {
@@ -54,11 +48,7 @@ export default async function CarEntries({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {entries.map((entry, key) => (
-          <TableRow key={key}>
-            {isEditing ? <></> : <ViewRow entry={entry} />}
-          </TableRow>
-        ))}
+        {entries.map((entry, key) => createRow(entry, key))}
       </TableBody>
     </Table>
   );

@@ -7,31 +7,28 @@ import {
   DialogContent,
   DialogFooter,
   DialogHeader,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { DialogTitle } from "@radix-ui/react-dialog";
-import { ReactNode } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 
 export default function Modal({
-  triggerText,
   title,
   content,
   footer,
-  includeCancel,
+  open,
+  setOpen,
+  includeCancel = false,
 }: {
-  triggerText: string;
   title: string;
   content: string | ReactNode;
   footer: string | ReactNode;
-  includeCancel: boolean;
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  includeCancel?: boolean;
 }) {
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button>{triggerText}</Button>
-      </DialogTrigger>
-
-      <DialogContent>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogContent aria-describedby={title}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
