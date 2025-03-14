@@ -8,7 +8,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { ReactNode, useState } from "react";
-import { ControllerRenderProps, UseFormReturn } from "react-hook-form";
+import {
+  ControllerRenderProps,
+  useFormContext
+} from "react-hook-form";
 
 function TextInput({
   placeholder,
@@ -59,16 +62,15 @@ function PasswordInput({
 }
 
 export function TextField({
-  form,
   name,
   label,
   placeholder,
 }: {
-  form: UseFormReturn<any>;
   name: string;
   label: string;
   placeholder?: string;
 }) {
+  const { control } = useFormContext();
   const renderField = (field: ControllerRenderProps) => {
     let inputType = <TextInput field={field} placeholder={placeholder} />;
 
@@ -87,7 +89,7 @@ export function TextField({
 
   return (
     <FormField
-      control={form.control}
+      control={control}
       name={name}
       render={({ field }) => renderField(field)}
     />

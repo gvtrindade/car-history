@@ -1,6 +1,8 @@
 "use client";
 
 import { postEntry } from "@/app/lib/action/entry";
+import { Entry } from "@/app/lib/definitions";
+import { getStringfiedDate } from "@/app/lib/util";
 import DateField from "@/app/ui/FormFields/DateField";
 import NumberField from "@/app/ui/FormFields/NumberField";
 import { TextField } from "@/app/ui/FormFields/TextField";
@@ -10,7 +12,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Entry } from "../lib/definitions";
 
 const formSchema = z.object({
   date: z.string(),
@@ -24,44 +25,23 @@ const formSchema = z.object({
 });
 
 type SchemaProps = z.infer<typeof formSchema>;
-
-function getStringfiedDate(date?: Date) {
-  let yourDate = date ?? new Date();
-  const offset = yourDate.getTimezoneOffset();
-  yourDate = new Date(yourDate.getTime() - offset * 60 * 1000);
-  return yourDate.toISOString().split("T")[0];
-}
-
 type Props = { carId: string; entry?: Entry };
 
 export default function EntryForm({ carId, entry }: Props) {
   const router = useRouter();
-  let defaultValues = {
-    date: getStringfiedDate(),
-    description: "",
-    odometer: 0,
-    place: "",
-    tags: "",
-    amount: 0,
-  };
-
-  if (entry) {
-    defaultValues = {
-      date: getStringfiedDate(entry.date),
-      description: entry.description,
-      odometer: entry.odometer,
-      place: entry.place ?? "",
-      tags: entry.tags ?? "",
-      amount: entry.amount,
-    };
-  }
-
   const form = useForm<SchemaProps>({
     resolver: zodResolver(formSchema),
-    defaultValues,
+    defaultValues: {
+      date: getStringfiedDate(),
+      description: "",
+      odometer: 0,
+      place: "",
+      tags: "",
+      amount: 0,
+    },
   });
 
-  const submitForm = async (values: SchemaProps) => {
+  async function submitForm(values: SchemaProps) {
     try {
       await postEntry(values, carId);
       router.refresh();
@@ -69,7 +49,7 @@ export default function EntryForm({ carId, entry }: Props) {
     } catch (e) {
       // Show toast
     }
-  };
+  }
 
   return (
     <Form {...form}>
@@ -79,15 +59,15 @@ export default function EntryForm({ carId, entry }: Props) {
       >
         <div className="flex flex-col sm:flex-row gap-6 sm:gap-8">
           <div className="flex flex-col gap-6 w-full max-w-xs">
-            <DateField form={form} name="date" label="Date" />
-            <TextField form={form} name="description" label="Description" />
-            <NumberField form={form} name="odometer" label="Odometer" />
+            <DateField name="date" label="Date" />
+            <TextField name="description" label="Description" />
+            <NumberField name="odometer" label="Odometer" />
           </div>
 
           <div className="flex flex-col gap-6 w-full max-w-xs">
-            <TextField form={form} name="place" label="Place" />
-            <TextField form={form} name="tags" label="Tags" />
-            <NumberField form={form} name="amount" label="Amount" />
+            <TextField name="place" label="Place" />
+            <TextField name="tags" label="Tags" />
+            <NumberField name="amount" label="Amount" />
           </div>
         </div>
 

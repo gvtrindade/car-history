@@ -27,5 +27,39 @@ export async function fetchCarById(
 export async function insertCar(car: Car, userId: string) {
   await sql`
     INSERT INTO cars(name, model, year, brand, color, plate, renavam, aquired_year, user_id)
-    VALUES (${car.name}, ${car.model}, ${car.year}, ${car.brand}, ${car.color}, ${car.plate}, ${car.renavam}, ${car.aquired_year}, ${userId})`;
+    VALUES (${car.name}, ${car.model}, ${car.year}, ${car.brand}, ${car.color}, ${car.plate}, ${car.renavam}, ${car.aquired_year}, ${userId})
+  `;
+}
+
+export async function updateCar(car: Car, userId: string) {
+  const row = await sql`
+    UPDATE cars
+    SET
+      name = ${car.name}, 
+      model = ${car.model},
+      year = ${car.year},
+      brand = ${car.brand},
+      color = ${car.color},
+      plate = ${car.plate}, 
+      renavam = ${car.renavam}, 
+      aquired_year = ${car.aquired_year}
+    WHERE
+      id = ${car.id}
+    AND 
+      user_id = ${userId}
+  `;
+  if (!row) {
+    throw new Error("Could not update entry");
+  }
+}
+
+export async function deleteCar(carId: string, userId: string) {
+  const row = await sql`
+    DELETE FROM cars
+    WHERE id = ${carId}
+    AND user_id = ${userId}
+  `;
+  if (!row) {
+    throw new Error("Could not update entry");
+  }
 }

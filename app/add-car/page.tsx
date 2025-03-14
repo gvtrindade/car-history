@@ -1,6 +1,6 @@
 "use client";
 
-import { createCar } from "@/app/lib/action/car";
+import { postCar } from "@/app/lib/action/car";
 import { Car } from "@/app/lib/definitions";
 import { TextField } from "@/app/ui/FormFields/TextField";
 import { Button } from "@/components/ui/button";
@@ -27,6 +27,16 @@ export default function Page() {
   const router = useRouter();
   const form = useForm<SchemaProps>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      model: "",
+      year: new Date().getFullYear(),
+      brand: "",
+      color: "",
+      plate: "",
+      renavam: "",
+      aquired_year: new Date().getFullYear(),
+    },
   });
 
   const submitForm = async (values: SchemaProps) => {
@@ -41,7 +51,7 @@ export default function Page() {
       renavam: values.renavam,
       aquired_year: values.aquired_year,
     };
-    await createCar(car);
+    await postCar(car);
     router.push("/");
   };
 
@@ -51,15 +61,16 @@ export default function Page() {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(submitForm)}>
-          <TextField form={form} name="name" label="Name" />
-          <TextField form={form} name="model" label="Model" />
-          <TextField form={form} name="year" label="Year" />
-          <TextField form={form} name="brand" label="Brand" />
-          <TextField form={form} name="color" label="Color" />
-          <TextField form={form} name="plate" label="Plate" />
-          <TextField form={form} name="renavam" label="Renavam" />
-          <TextField form={form} name="aquired_year" label="Aquired in year" />
+          <TextField name="name" label="Name" />
+          <TextField name="model" label="Model" />
+          <TextField name="year" label="Year" />
+          <TextField name="brand" label="Brand" />
+          <TextField name="color" label="Color" />
+          <TextField name="plate" label="Plate" />
+          <TextField name="renavam" label="Renavam" />
+          <TextField name="aquired_year" label="Aquired in year" />
 
+          <Button type="button" onClick={() => router.back()}>Back</Button>
           <Button type="submit">Create</Button>
         </form>
       </Form>

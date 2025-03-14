@@ -27,7 +27,7 @@ export default async function Home({ searchParams }: Props) {
 
           <div className="grid grid-cols-2 gap-4 m-4">
             <CarSelect defaultId={car.id} options={userCars} />
-            <Button>Export</Button>
+            <Button disabled>Export</Button>
           </div>
 
           <EntryList car={car} year={year} />

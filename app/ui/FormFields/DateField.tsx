@@ -6,22 +6,19 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { UseFormReturn } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 export default function DateField({
-  form,
   name,
   label,
-  placeholder,
 }: {
-  form: UseFormReturn<any>;
   name: string;
   label: string;
-  placeholder?: string;
 }) {
+  const { control } = useFormContext();
   return (
     <FormField
-      control={form.control}
+      control={control}
       name={name}
       render={({ field }) => (
         <FormItem>

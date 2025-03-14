@@ -2,7 +2,7 @@ Car
 [x] The user should see all cars in a sidebar
 [x] The user should add cars from the sidebar
 [x] The user should view all years that had entries registered from the car page
-[ ] The user should edit the car data from the car page
+[x] The user should edit the car data from the car page
 [x] The home page should show the data of the last selected car
 [x] The user should be able to change the selected car in the home page
 
@@ -20,6 +20,7 @@ User
 [ ] A person should be able to register with their email
 [ ] A user should be able to edit their email and password
 [ ] A user should only see their cars
+[ ] Actions should trigger a toaster to inform the user
 
 Bugs
-[ ] Date is incorrect when registering an entry
+[x] Date is incorrect when registering an entry

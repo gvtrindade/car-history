@@ -2,11 +2,12 @@
 
 import { deleteEntryById } from "@/app/lib/action/entry";
 import { Entry } from "@/app/lib/definitions";
+import { includeZero } from "@/app/lib/util";
 import Modal from "@/app/ui/Modal";
 import { Button } from "@/components/ui/button";
 import { TableCell } from "@/components/ui/table";
 import { useRouter } from "next/navigation";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 
 type Props = {
   entry: Entry;
@@ -42,8 +43,8 @@ export default function ViewRow({
           ""
         ) : (
           <>
-            {entry.date.getUTCMonth()}-{entry.date.getUTCDate()}-
-            {entry.date.getUTCFullYear()}
+            {includeZero(entry.date.getUTCMonth())}/
+            {includeZero(entry.date.getUTCDate())}/{entry.date.getUTCFullYear()}
           </>
         )}
       </TableCell>
