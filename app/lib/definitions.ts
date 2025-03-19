@@ -23,8 +23,16 @@ export type Entry = {
 
 export type User = {
   id: string;
-  username: string;
-  hash: string;
   email: string;
-  cars: Car[];
+  hash: string;
+  is_deleted: boolean;
+  is_admin: boolean;
+  is_validated: boolean;
+};
+
+export type EmailData = {
+  email: string;
+  token: string;
+  subject: string;
+  template: "signup" | "forgot-password";
 };

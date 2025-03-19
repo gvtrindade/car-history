@@ -1,5 +1,7 @@
+import "@/app/globals.css";
 import { getCarsByUser } from "@/app/lib/action/car";
 import { Car } from "@/app/lib/definitions";
+import { auth } from "@/auth";
 import {
   Sidebar,
   SidebarContent,
@@ -8,11 +10,11 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
-  SidebarTrigger
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
-import "@/app/globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import LogoutButton from "./ui/logoutButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +36,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
   const cars: Car[] = await getCarsByUser();
 
   return (
@@ -50,31 +53,47 @@ export default async function RootLayout({
             </SidebarHeader>
 
             <SidebarContent>
-              <SidebarMenu>
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <a href={"/"}>
-                      <span>Home</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-                {cars.map((car) => (
-                  <SidebarMenuItem key={car.id}>
+              {session?.user ? (
+                <SidebarMenu>
+                  <SidebarMenuItem>
                     <SidebarMenuButton asChild>
-                      <a href={`/${car.id}`}>
-                        <span>{car.name}</span>
+                      <a href={"/"}>
+                        <span>Home</span>
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                ))}
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <a href={"/add-car"}>
-                      <span>+</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              </SidebarMenu>
+                  {cars.map((car) => (
+                    <SidebarMenuItem key={car.id}>
+                      <SidebarMenuButton asChild>
+                        <a href={`/${car.id}`}>
+                          <span>{car.name}</span>
+                        </a>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={"/add-car"}>
+                        <span>+</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+
+                  <SidebarMenuItem>
+                    <LogoutButton />
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              ) : (
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <a href={"/login"}>
+                        <span>Login</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              )}
             </SidebarContent>
           </Sidebar>
 

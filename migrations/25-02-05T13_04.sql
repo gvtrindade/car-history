@@ -4,6 +4,9 @@ CREATE TABLE "users" (
 	"id" UUID NOT NULL DEFAULT uuid_generate_v4() UNIQUE,
 	"hash" TEXT NOT NULL,
 	"email" TEXT NOT NULL UNIQUE,
+	"is_activated" BOOL NOT NULL DEFAULT FALSE,
+	"is_admin" BOOL NOT NULL DEFAULT FALSE,
+	"is_deleted" BOOL NOT NULL DEFAULT FALSE,
 	PRIMARY KEY("id")
 );
 
@@ -35,6 +38,13 @@ CREATE TABLE "entries" (
 	PRIMARY KEY("id")
 );
 
+CREATE TABLE "user_tokens" (
+	"id" SERIAL NOT NULL UNIQUE,
+	"email" TEXT NOT NULL,
+	"token" TEXT NOT NULL,
+	"created_at" DATE NOT NULL DEFAULT NOW(),
+	PRIMARY KEY("id")
+);
 
 ALTER TABLE "entries"
 ADD FOREIGN KEY("car_id") REFERENCES "cars"("id")

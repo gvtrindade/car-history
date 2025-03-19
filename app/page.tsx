@@ -3,6 +3,7 @@ import { Car } from "@/app/lib/definitions";
 import EntryList from "@/app/ui/EntryLIst/entryList";
 import CarSelect from "@/app/ui/carSelect";
 import EntryForm from "@/app/ui/entryForm";
+import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { cookies } from "next/headers";
 
@@ -11,8 +12,13 @@ type Props = {
 };
 
 export default async function Home({ searchParams }: Props) {
+  const session = await auth();
+  if (!session?.user) return null;
+
   const cookieStore = await cookies();
-  const savedId = cookieStore.has("carId") ? cookieStore.get("carId")?.value : null;
+  const savedId = cookieStore.has("carId")
+    ? cookieStore.get("carId")?.value
+    : null;
   const { carId = savedId } = await searchParams;
 
   const year = new Date().getFullYear();
