@@ -1,8 +1,10 @@
 import { validateUser } from "@/app/lib/action/auth";
 import { Button } from "@/components/ui/button";
 
-export default async function Page({ params }: { params: { token: string } }) {
-  const { token } = params;
+type Params = Promise<{ token: string }>;
+
+export default async function Page({ params }: { params: Params }) {
+  const { token } = await params;
   let isEmailValidated = false;
 
   try {
@@ -10,7 +12,7 @@ export default async function Page({ params }: { params: { token: string } }) {
     isEmailValidated = true;
   } catch (e) {
     // do nothing
-    console.log(e)
+    console.log(e);
   }
 
   return (
@@ -19,9 +21,7 @@ export default async function Page({ params }: { params: { token: string } }) {
         <p>Thank you for validating your email!</p>
       ) : (
         <>
-          <p>
-            There was a problem validating your token
-          </p>
+          <p>There was a problem validating your token</p>
           <Button>Resend token</Button>
         </>
       )}

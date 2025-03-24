@@ -4,15 +4,13 @@ import EntryList from "@/app/ui/EntryLIst/entryList";
 import EntryForm from "@/app/ui/entryForm";
 import { auth } from "@/auth";
 
-type Props = {
-  params: { carId: string; year: number };
-};
+type Params = Promise<{ carId: string; year: number }>;
 
-export default async function YearEntries({ params }: Props) {
+export default async function YearEntries({ params }: { params: Params }) {
   const session = await auth();
   if (!session?.user) return null;
 
-  const { carId: carId, year } = await params;
+  const { carId, year } = await params;
   const car: Car = await getCarById(session.user.id!, carId);
 
   return (

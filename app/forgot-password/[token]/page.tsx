@@ -3,8 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Suspense } from "react";
 import NewPasswordForm from "@/app/forgot-password/[token]/newPasswordForm";
 
-export default async function Page({ params }: { params: { token: string } }) {
-  const { token } = params;
+type Params = Promise<{ token: string }>;
+
+export default async function Page({ params }: { params: Params }) {
+  const { token } = await params;
   const isEmailValidated = await authenticateToken(token);
 
   return (

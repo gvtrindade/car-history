@@ -6,6 +6,7 @@ import { includeZero } from "@/app/lib/util";
 import Modal from "@/app/ui/Modal";
 import { Button } from "@/components/ui/button";
 import { TableCell } from "@/components/ui/table";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -24,12 +25,17 @@ export default function ViewRow({
 }: Props) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const { data: session } = useSession();
 
   async function confirmDelete(entry: Entry) {
     try {
-      await deleteEntryById(entry);
-      router.refresh();
-      setOpen(false);
+      if (session?.user && session?.user.id) {
+        await deleteEntryById(session.user.id, entry);
+        router.refresh();
+        setOpen(false);
+      } else {
+        throw Error("Invalid user")
+      }
     } catch (error) {
       console.log(error);
       // Show delete error toast

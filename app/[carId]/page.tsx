@@ -6,11 +6,9 @@ import { auth } from "@/auth";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 
-type Props = {
-  params: { carId: string };
-};
+type Params = Promise<{ carId: string }>;
 
-export default async function CarPage({ params }: Props) {
+export default async function CarPage({ params }: { params: Params }) {
   const session = await auth();
   if (!session?.user) return null;
 
