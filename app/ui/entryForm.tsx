@@ -1,7 +1,6 @@
 "use client";
 
 import { postEntry } from "@/app/lib/action/entry";
-import { Entry } from "@/app/lib/definitions";
 import { getStringfiedDate } from "@/app/lib/util";
 import DateField from "@/app/ui/FormFields/DateField";
 import NumberField from "@/app/ui/FormFields/NumberField";
@@ -25,9 +24,9 @@ const formSchema = z.object({
 });
 
 type SchemaProps = z.infer<typeof formSchema>;
-type Props = { carId: string; entry?: Entry };
+type Props = { carId: string };
 
-export default function EntryForm({ carId, entry }: Props) {
+export default function EntryForm({ carId }: Props) {
   const router = useRouter();
   const form = useForm<SchemaProps>({
     resolver: zodResolver(formSchema),
@@ -48,6 +47,7 @@ export default function EntryForm({ carId, entry }: Props) {
       form.reset();
     } catch (e) {
       // Show toast
+      console.log(e);
     }
   }
 

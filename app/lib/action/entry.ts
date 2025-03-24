@@ -21,7 +21,7 @@ export async function getEntryRecordYearByCarId(userId: string, carId: string) {
   return years;
 }
 
-export async function postEntry(entry: any, carId: string) {
+export async function postEntry(entry: {[key: string]: string | number}, carId: string) {
   await insertEntry(entry, carId);
 }
 

@@ -9,6 +9,7 @@ import { TextField } from "@/app/ui/FormFields/TextField";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -32,23 +33,23 @@ type Props = { entry: Entry; setIsEditing: (state: boolean) => void };
 
 export default function FormRow({ entry, setIsEditing }: Props) {
   const router = useRouter();
-  let defaultValues = {
-    date: getStringfiedDate(entry.date),
-    description: entry.description,
-    odometer: entry.odometer,
-    place: entry.place ?? "",
-    tags: entry.tags ?? "",
-    amount: entry.amount,
-  };
+  const { data: session } = useSession();
 
   const form = useForm<SchemaProps>({
     resolver: zodResolver(formSchema),
-    defaultValues,
+    defaultValues: {
+      date: getStringfiedDate(entry.date),
+      description: entry.description,
+      odometer: entry.odometer,
+      place: entry.place ?? "",
+      tags: entry.tags ?? "",
+      amount: entry.amount,
+    },
   });
 
   const [open, setOpen] = useState(false);
 
-  const submitForm = async (values: SchemaProps) => {
+  const submitForm = async () => {
     setOpen(true);
   };
 
@@ -66,12 +67,17 @@ export default function FormRow({ entry, setIsEditing }: Props) {
     };
 
     try {
-      await putEntry(editEntry);
-      setOpen(false);
-      setIsEditing(false);
-      router.refresh();
+      if (session?.user && session.user.id) {
+        await putEntry(session.user.id, editEntry);
+        setOpen(false);
+        setIsEditing(false);
+        router.refresh();
+      } else {
+        throw Error("Invalid user")
+      }
     } catch (e) {
       //Show toast
+      console.log(e);
     }
   };
 

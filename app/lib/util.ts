@@ -1,5 +1,5 @@
 export function getStringfiedDate(date?: Date) {
-  let yourDate = date ?? new Date();
+  const yourDate = date ?? new Date();
   return yourDate.toISOString().split("T")[0];
 }
 

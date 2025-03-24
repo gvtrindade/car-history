@@ -33,7 +33,7 @@ export async function fetchEntryRecordYearByCarId(
   return years;
 }
 
-export async function insertEntry(entry: any, carId: string) {
+export async function insertEntry(entry: {[key: string]: string | number}, carId: string) {
   const row = await sql`
     INSERT INTO entries(description, amount, odometer, date, place, tags, car_id)
     VALUES (${entry.description}, ${entry.amount}, ${entry.odometer}, ${entry.date}, ${entry.place}, ${entry.tags}, ${carId})

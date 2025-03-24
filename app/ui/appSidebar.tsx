@@ -9,6 +9,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { HomeIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 type Props = {
   isUserLogged: boolean;
@@ -19,9 +20,9 @@ export default async function AppSidebar({ isUserLogged, cars }: Props) {
   return (
     <Sidebar>
       <SidebarHeader className="text-2xl font-bold hover:underline">
-        <a href="/">
+        <Link href="/">
           <h2>Car History</h2>
-        </a>
+        </Link>
       </SidebarHeader>
 
       <SidebarContent>
@@ -29,26 +30,26 @@ export default async function AppSidebar({ isUserLogged, cars }: Props) {
           <SidebarMenu className="flex flex-col gap-2 mt-6">
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <a href={"/"}>
+                <Link href="/">
                   <HomeIcon />
                   <span>Home</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
             {cars.map((car) => (
               <SidebarMenuItem key={car.id}>
                 <SidebarMenuButton asChild>
-                  <a href={`/${car.id}`}>
+                  <Link href={`/${car.id}`}>
                     <span>{car.name}</span>
-                  </a>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}
             <SidebarMenuItem className="flex justify-items-center">
               <SidebarMenuButton asChild>
-                <a href={"/add-car"}>
+                <Link href={"/add-car"}>
                   <PlusCircleIcon />
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
 
@@ -62,9 +63,9 @@ export default async function AppSidebar({ isUserLogged, cars }: Props) {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <a href={"/login"}>
+                <Link href={"/login"}>
                   <span>Login</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>

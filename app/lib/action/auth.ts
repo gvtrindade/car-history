@@ -12,7 +12,7 @@ import bcrypt from "bcrypt";
 import { randomUUID } from "crypto";
 import { AuthError } from "next-auth";
 import { z } from "zod";
-import { EmailData, User } from "../definitions";
+import { EmailData } from "../definitions";
 import { sendEmail } from "./email";
 
 export async function authenticate(formData: {
@@ -35,7 +35,7 @@ export async function authenticate(formData: {
   }
 }
 
-export async function signUp(formData: any) {
+export async function signUp(formData: { [key: string]: string }) {
   const parsedCredentials = z
     .object({
       email: z.string(),
@@ -45,7 +45,7 @@ export async function signUp(formData: any) {
 
   if (parsedCredentials.success) {
     const { email, password } = parsedCredentials.data;
-    let user = await getUserByEmail(email);
+    const user = await getUserByEmail(email);
 
     if (user) throw new Error("User already exists");
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -80,12 +80,13 @@ export async function authenticateToken(token: string) {
   try {
     await getUserByToken(token);
     return true;
-  } catch (err) {
+  } catch (e) {
+    console.log(e);
     return false;
   }
 }
 
-export async function forgotPassword(formData: any) {
+export async function forgotPassword(formData: { [key: string]: string }) {
   const parsedCredentials = z
     .object({
       email: z.string(),
@@ -111,7 +112,10 @@ export async function forgotPassword(formData: any) {
   }
 }
 
-export async function resetPassword(formData: any, token: string) {
+export async function resetPassword(
+  formData: { [key: string]: string },
+  token: string
+) {
   const parsedCredentials = z
     .object({
       password: z.string(),

@@ -70,6 +70,7 @@ export default function CarForm({ userId, car, className = "" }: Props) {
       setIsEditing(false);
     } catch (e) {
       // Show toast
+      console.log(e);
     }
   }
 

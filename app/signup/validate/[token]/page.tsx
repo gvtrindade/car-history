@@ -8,8 +8,9 @@ export default async function Page({ params }: { params: { token: string } }) {
   try {
     await validateUser(token);
     isEmailValidated = true;
-  } catch (err) {
+  } catch (e) {
     // do nothing
+    console.log(e)
   }
 
   return (

@@ -41,8 +41,9 @@ export default function NewPasswordForm({ token }: { token: string }) {
     try {
       await resetPassword(values, token);
       router.push("/login");
-    } catch (err) {
-      // do nothing
+    } catch (e) {
+      // Show Toast
+      console.log(e) 
     }
   };
 

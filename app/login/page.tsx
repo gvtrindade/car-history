@@ -19,7 +19,7 @@ export default function Page() {
           </Link>
         </div>
         <div className="flex flex-col gap-4 md:items-center">
-          <h2 className="text-2xl">Don't have an account yet?</h2>
+          <h2 className="text-2xl">Don&apos;t have an account yet?</h2>
           <Link href="/signup">
             <Button>Sign up!</Button>
           </Link>

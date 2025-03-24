@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { TextField } from "../ui/FormFields/TextField";
@@ -18,7 +17,6 @@ const formSchema = z.object({
 type SchemaProps = z.infer<typeof formSchema>;
 
 export default function LoginForm() {
-  const router = useRouter();
   const form = useForm<SchemaProps>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,6 +30,7 @@ export default function LoginForm() {
       await authenticate(values);
     } catch (e) {
       // Show toast
+      console.log(e)
     }
   }
 

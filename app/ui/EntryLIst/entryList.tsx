@@ -15,18 +15,18 @@ type Props = {
   car: Car;
   year: number;
   className?: string;
-}
+};
 
 export default async function EntryList({
   userId,
   car,
   year,
-  className = ""
+  className = "",
 }: Props) {
   const entries: Entry[] = await getEntriesByCarAndYear(userId, car.id);
   let previousDate: Date | null = null;
 
-  function createRow(entry: Entry, key: number) {
+  async function createRow(entry: Entry, key: number) {
     let hideDate = false;
     if (previousDate) {
       hideDate = previousDate.getDate() === entry.date.getDate();
