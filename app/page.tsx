@@ -16,31 +16,43 @@ export default async function Home({ searchParams }: Props) {
   if (!session?.user) return null;
 
   const cookieStore = await cookies();
-  const savedId = cookieStore.has("carId")
-    ? cookieStore.get("carId")?.value
+  const savedUserId = cookieStore.has("userId")
+    ? cookieStore.get("userId")?.value
     : null;
-  const { carId = savedId } = await searchParams;
+  let savedCarId = null;
+  if (savedUserId === session.user.id!) {
+    savedCarId = cookieStore.has("carId")
+      ? cookieStore.get("carId")?.value
+      : null;
+  }
+
+  const { carId = savedCarId } = await searchParams;
 
   const year = new Date().getFullYear();
-  const car: Car = await getCarById(carId);
-  const userCars: Car[] = await getCarsByUser();
+  const car: Car = await getCarById(session.user.id!, carId);
+  const userCars: Car[] = await getCarsByUser(session.user.id!);
 
   return (
-    <>
+    <div className="w-2/3 mx-auto">
       {car ? (
         <>
           <EntryForm carId={car.id} />
 
-          <div className="grid grid-cols-2 gap-4 m-4">
+          <div className="flex flex-col gap-4 mt-6 sm:flex-row sm:justify-center">
             <CarSelect defaultId={car.id} options={userCars} />
             <Button disabled>Export</Button>
           </div>
 
-          <EntryList car={car} year={year} />
+          <EntryList
+            userId={session.user.id!}
+            car={car}
+            year={year}
+            className="mt-6"
+          />
         </>
       ) : (
-        <h3> Register a car to view entries </h3>
+        <h3 className="text-3xl font-bold"> Register a car to view entries </h3>
       )}
-    </>
+    </div>
   );
 }

@@ -80,7 +80,7 @@ export function TextField({
 
     return (
       <FormItem>
-        <FormLabel>{label}</FormLabel>
+        <FormLabel className="font-bold">{label}</FormLabel>
         <FormControl>{inputType}</FormControl>
         <FormMessage />
       </FormItem>

@@ -17,9 +17,9 @@ Entry
 [ ] The user should be able to sort the entry list by date, but default to descending
 
 User 
-[ ] A person should be able to register with their email
+[x] A person should be able to register with their email
 [ ] A user should be able to edit their email and password
-[ ] A user should only see their cars
+[x] A user should only see their cars
 [ ] Actions should trigger a toaster to inform the user
 
 Bugs

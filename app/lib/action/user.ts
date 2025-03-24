@@ -25,7 +25,7 @@ export async function getUserByToken(token: string): Promise<User | undefined> {
   try {
     const rows = await sql<User[]>`
       SELECT u.* FROM users u
-      JOIN user_token ut ON u.id = ut.user_id
+      JOIN user_tokens ut ON u.email = ut.email
       WHERE token = ${token}
       ORDER BY ut.created_at DESC
       LIMIT 1

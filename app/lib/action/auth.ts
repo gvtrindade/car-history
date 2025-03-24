@@ -62,7 +62,7 @@ export async function signUp(formData: any) {
     const emailData: EmailData = {
       email: newUser.email,
       token: emailToken,
-      subject: "Welcome to Munlore",
+      subject: "Welcome to Car History",
       template: "signup",
     };
     await sendEmail(emailData);

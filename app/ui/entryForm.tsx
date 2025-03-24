@@ -55,23 +55,23 @@ export default function EntryForm({ carId, entry }: Props) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(submitForm)}
-        className="flex flex-col justify-center"
+        className="flex flex-col justify-center items-center"
       >
         <div className="flex flex-col sm:flex-row gap-6 sm:gap-8">
-          <div className="flex flex-col gap-6 w-full max-w-xs">
+          <div className="flex flex-col gap-6 w-full">
             <DateField name="date" label="Date" />
             <TextField name="description" label="Description" />
             <NumberField name="odometer" label="Odometer" />
           </div>
 
-          <div className="flex flex-col gap-6 w-full max-w-xs">
+          <div className="flex flex-col gap-6 w-full">
             <TextField name="place" label="Place" />
             <TextField name="tags" label="Tags" />
             <NumberField name="amount" label="Amount" />
           </div>
         </div>
 
-        <Button type="submit" className="my-8">
+        <Button type="submit" className="my-8 w-1/3 min-w-40">
           Register
         </Button>
       </form>

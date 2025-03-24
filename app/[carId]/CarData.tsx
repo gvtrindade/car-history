@@ -1,3 +1,5 @@
+import { Label } from "@/components/ui/label";
+
 type Props = {
   label: string;
   data: string | number;
@@ -5,9 +7,9 @@ type Props = {
 
 export default function CarData({ label, data }: Props) {
   return (
-    <>
-      <p className="font-bold">{label}</p>
+    <div>
+      <Label className="font-bold text-lg underline">{label}</Label>
       <p className="ml-2">{data}</p>
-    </>
+    </div>
   );
 }

@@ -22,8 +22,12 @@ const formSchema = z.object({
 });
 
 type SchemaProps = z.infer<typeof formSchema>;
+type Props = {
+  userId: string;
+  className: string;
+};
 
-export default function AddForm() {
+export default function AddForm({ userId, className = "" }: Props) {
   const router = useRouter();
   const form = useForm<SchemaProps>({
     resolver: zodResolver(formSchema),
@@ -51,26 +55,38 @@ export default function AddForm() {
       renavam: values.renavam,
       aquired_year: values.aquired_year,
     };
-    await postCar(car);
+    await postCar(userId, car);
     router.push("/");
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(submitForm)}>
-        <TextField name="name" label="Name" />
-        <TextField name="model" label="Model" />
-        <TextField name="year" label="Year" />
-        <TextField name="brand" label="Brand" />
-        <TextField name="color" label="Color" />
-        <TextField name="plate" label="Plate" />
-        <TextField name="renavam" label="Renavam" />
-        <TextField name="aquired_year" label="Aquired in year" />
+      <form
+        onSubmit={form.handleSubmit(submitForm)}
+        className={`flex flex-col justify-center items-center ${className}`}
+      >
+        <div className="flex flex-col sm:flex-row gap-6 sm:gap-8">
+          <div className="flex flex-col gap-6 w-full">
+            <TextField name="name" label="Name" />
+            <TextField name="model" label="Model" />
+            <TextField name="year" label="Year" />
+            <TextField name="brand" label="Brand" />
+          </div>
 
-        <Button type="button" onClick={() => router.back()}>
-          Back
-        </Button>
-        <Button type="submit">Create</Button>
+          <div className="flex flex-col gap-6 w-full">
+            <TextField name="color" label="Color" />
+            <TextField name="plate" label="Plate" />
+            <TextField name="renavam" label="Renavam" />
+            <TextField name="aquired_year" label="Aquired in year" />
+          </div>
+        </div>
+
+        <div className="flex w-full justify-center gap-4 mt-6">
+          <Button type="button" onClick={() => router.back()}>
+            Back
+          </Button>
+          <Button type="submit">Create</Button>
+        </div>
       </form>
     </Form>
   );

@@ -4,6 +4,7 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { z } from "zod";
 import { getUserByEmail } from "./app/lib/action/user";
+import { cookies } from "next/headers";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
@@ -25,7 +26,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
           const isPasswordCorrect = await bcrypt.compare(password, user.hash);
 
-          if (isPasswordCorrect) return user;
+          if (isPasswordCorrect) {
+            const cookieStore = await cookies();
+            cookieStore.set("userId", user.id);
+            return user;
+          }
         }
 
         return null;

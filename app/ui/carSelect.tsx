@@ -26,7 +26,7 @@ export default function CarSelect({ defaultId, options }: Props) {
 
   return (
     <Select defaultValue={defaultId} onValueChange={changeCar}>
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger className="sm:w-1/3">
         <SelectValue placeholder="Car" />
       </SelectTrigger>
       <SelectContent>

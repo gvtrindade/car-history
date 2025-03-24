@@ -27,10 +27,12 @@ const formSchema = z.object({
 
 type SchemaProps = z.infer<typeof formSchema>;
 type Props = {
+  userId: string;
   car: Car;
+  className?: string;
 };
 
-export default function CarForm({ car }: Props) {
+export default function CarForm({ userId, car, className = "" }: Props) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [open, setOpen] = useState(false);
@@ -63,7 +65,7 @@ export default function CarForm({ car }: Props) {
     };
 
     try {
-      await putCar(editedCar);
+      await putCar(userId, editedCar);
       router.refresh();
       setIsEditing(false);
     } catch (e) {
@@ -72,12 +74,12 @@ export default function CarForm({ car }: Props) {
   }
 
   async function confirmDelete() {
-    await deleteCarById(car.id);
+    await deleteCarById(userId, car.id);
     router.push("/");
   }
 
   return (
-    <>
+    <div className={className}>
       {isEditing ? (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(submitForm)}>
@@ -96,15 +98,17 @@ export default function CarForm({ car }: Props) {
               </div>
             </div>
 
-            <Button type="button" onClick={() => setIsEditing(false)}>
-              Cancel
-            </Button>
-            <Button type="submit">Save</Button>
+            <div className="flex w-full justify-center gap-4 mt-6">
+              <Button type="button" onClick={() => setIsEditing(false)}>
+                Cancel
+              </Button>
+              <Button type="submit">Save</Button>
+            </div>
           </form>
         </Form>
       ) : (
         <>
-          <div>
+          <div className="flex w-full justify-center gap-4">
             <Button onClick={() => setIsEditing(true)}>Edit</Button>
             <Button onClick={() => setOpen(true)}>Delete</Button>
             <Modal
@@ -119,14 +123,15 @@ export default function CarForm({ car }: Props) {
               setOpen={setOpen}
             />
           </div>
-          <div className="flex flex-col sm:flex-row gap-6">
-            <div>
+
+          <div className="flex justify-center mt-6 text-center sm:gap-6">
+            <div className="flex w-full flex-col gap-6">
               <CarData label="Name" data={car.name} />
               <CarData label="Model" data={car.model} />
               <CarData label="Year" data={car.year} />
               <CarData label="Brand" data={car.brand} />
             </div>
-            <div>
+            <div className="flex w-full flex-col gap-6">
               <CarData label="Color" data={car.color} />
               <CarData label="Plate" data={car.plate} />
               <CarData label="Renavam" data={car.renavam} />
@@ -135,6 +140,6 @@ export default function CarForm({ car }: Props) {
           </div>
         </>
       )}
-    </>
+    </div>
   );
 }

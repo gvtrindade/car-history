@@ -1,20 +1,11 @@
 import "@/app/globals.css";
 import { getCarsByUser } from "@/app/lib/action/car";
 import { Car } from "@/app/lib/definitions";
+import AppSidebar from "@/app/ui/appSidebar";
 import { auth } from "@/auth";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import LogoutButton from "./ui/logoutButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,67 +28,21 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
-  const cars: Car[] = await getCarsByUser();
+
+  let cars: Car[] = [];
+  if (session?.user?.id) {
+    cars = await getCarsByUser(session.user.id);
+  }
 
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <SidebarProvider>
-          <Sidebar>
-            <SidebarHeader>
-              <a href="/">
-                <span>Car History</span>
-              </a>
-            </SidebarHeader>
+        <SidebarProvider defaultOpen={false}>
+          <AppSidebar isUserLogged={session?.user !== undefined} cars={cars} />
 
-            <SidebarContent>
-              {session?.user ? (
-                <SidebarMenu>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <a href={"/"}>
-                        <span>Home</span>
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  {cars.map((car) => (
-                    <SidebarMenuItem key={car.id}>
-                      <SidebarMenuButton asChild>
-                        <a href={`/${car.id}`}>
-                          <span>{car.name}</span>
-                        </a>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <a href={"/add-car"}>
-                        <span>+</span>
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-
-                  <SidebarMenuItem>
-                    <LogoutButton />
-                  </SidebarMenuItem>
-                </SidebarMenu>
-              ) : (
-                <SidebarMenu>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <a href={"/login"}>
-                        <span>Login</span>
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                </SidebarMenu>
-              )}
-            </SidebarContent>
-          </Sidebar>
-
-          <main>
+          <main className="w-full pb-10">
             <SidebarTrigger />
             {children}
           </main>

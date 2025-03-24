@@ -7,10 +7,8 @@ import {
 } from "@/app/lib/data/entry";
 import { Entry } from "../definitions";
 
-// TODO: get user id via session
-const userId = "4f245a8f-07ec-4085-9870-7bbd8ee807ab";
-
 export async function getEntriesByCarAndYear(
+  userId: string,
   carId: string,
   year: number = new Date().getFullYear()
 ) {
@@ -18,7 +16,7 @@ export async function getEntriesByCarAndYear(
   return entries;
 }
 
-export async function getEntryRecordYearByCarId(carId: string) {
+export async function getEntryRecordYearByCarId(userId: string, carId: string) {
   const years = await fetchEntryRecordYearByCarId(carId, userId);
   return years;
 }
@@ -27,11 +25,11 @@ export async function postEntry(entry: any, carId: string) {
   await insertEntry(entry, carId);
 }
 
-export async function putEntry(entry: Entry) {
+export async function putEntry(userId: string, entry: Entry) {
   // Get user credentials
   await updateEntry(entry, userId);
 }
 
-export async function deleteEntryById(entry: Entry) {
+export async function deleteEntryById(userId: string, entry: Entry) {
   await deleteEntry(entry, userId);
 }

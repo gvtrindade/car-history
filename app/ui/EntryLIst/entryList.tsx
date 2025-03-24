@@ -10,14 +10,20 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-export default async function EntryList({
-  car,
-  year,
-}: {
+type Props = {
+  userId: string;
   car: Car;
   year: number;
-}) {
-  const entries: Entry[] = await getEntriesByCarAndYear(car.id);
+  className?: string;
+}
+
+export default async function EntryList({
+  userId,
+  car,
+  year,
+  className = ""
+}: Props) {
+  const entries: Entry[] = await getEntriesByCarAndYear(userId, car.id);
   let previousDate: Date | null = null;
 
   function createRow(entry: Entry, key: number) {
@@ -31,7 +37,7 @@ export default async function EntryList({
   }
 
   return (
-    <Table>
+    <Table className={className}>
       <TableCaption>
         The list of expenses of the car {car.name} in the year {year}
       </TableCaption>

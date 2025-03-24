@@ -22,7 +22,7 @@ export default function DateField({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel className="font-bold">{label}</FormLabel>
           <FormControl>
             <div className="flex gap-2 w-full">
               <Input type="date" {...field} />

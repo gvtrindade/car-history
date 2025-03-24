@@ -36,6 +36,11 @@ export default function Page() {
   const router = useRouter();
   const form = useForm<SchemaProps>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      passwordConfirm: "",
+    },
   });
 
   const submitForm = async (values: SchemaProps) => {
@@ -66,9 +71,14 @@ export default function Page() {
               placeholder="Confirm your password"
             />
 
-            <Button type="submit" className="mt-6">
-              Sign up
-            </Button>
+            <div className="flex gap-6">
+              <Button type="button" onClick={() => router.back()}>
+                Back
+              </Button>
+              <Button type="submit">
+                Sign up
+              </Button>
+            </div>
           </div>
         </form>
       </Form>

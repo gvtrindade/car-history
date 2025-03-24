@@ -4,23 +4,29 @@ import EntryList from "@/app/ui/EntryLIst/entryList";
 import EntryForm from "@/app/ui/entryForm";
 import { auth } from "@/auth";
 
-export default async function YearEntries({
-  params,
-}: {
+type Props = {
   params: { carId: string; year: number };
-}) {
+};
+
+export default async function YearEntries({ params }: Props) {
   const session = await auth();
   if (!session?.user) return null;
 
   const { carId: carId, year } = await params;
-  const car: Car = await getCarById(carId);
+  const car: Car = await getCarById(session.user.id!, carId);
 
   return (
-    <>
-      <h2>{car.name}</h2>
+    <div className="flex flex-col gap-6 w-2/3 mx-auto">
+      {car ? (
+        <>
+          <h2 className="text-3xl font-bold">{car.name}</h2>
 
-      <EntryForm carId={carId} />
-      <EntryList car={car} year={year} />
-    </>
+          <EntryForm carId={carId} />
+          <EntryList userId={session.user.id!} car={car} year={year} />
+        </>
+      ) : (
+        <h3 className="font-bold text-4xl text-center">Car not found</h3>
+      )}
+    </div>
   );
 }
