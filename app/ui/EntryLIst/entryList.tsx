@@ -23,7 +23,7 @@ export default async function EntryList({
   year,
   className = "",
 }: Props) {
-  const entries: Entry[] = await getEntriesByCarAndYear(userId, car.id);
+  const entries: Entry[] = await getEntriesByCarAndYear(userId, car.id, year);
   let previousDate: Date | null = null;
 
   async function createRow(entry: Entry, key: number) {

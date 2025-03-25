@@ -6,6 +6,7 @@ import { includeZero } from "@/app/lib/util";
 import Modal from "@/app/ui/Modal";
 import { Button } from "@/components/ui/button";
 import { TableCell } from "@/components/ui/table";
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -34,7 +35,7 @@ export default function ViewRow({
         router.refresh();
         setOpen(false);
       } else {
-        throw Error("Invalid user")
+        throw Error("Invalid user");
       }
     } catch (error) {
       console.log(error);
@@ -49,7 +50,7 @@ export default function ViewRow({
           ""
         ) : (
           <>
-            {includeZero(entry.date.getUTCMonth())}/
+            {includeZero(entry.date.getUTCMonth() + 1)}/
             {includeZero(entry.date.getUTCDate())}/{entry.date.getUTCFullYear()}
           </>
         )}
@@ -58,29 +59,31 @@ export default function ViewRow({
       <TableCell>{entry.odometer}</TableCell>
       <TableCell>{entry.place}</TableCell>
       <TableCell>{entry.tags}</TableCell>
-      <TableCell className="text-right">{entry.amount}</TableCell>
+      <TableCell className="text-right">
+        ${Number(entry.amount).toFixed(2)}
+      </TableCell>
       <TableCell>
         {isEditing ? (
           <Button onClick={() => setIsEditing(false)}>Cancel</Button>
         ) : (
-          <div className="grid gap-2">
-            <Button onClick={() => setIsEditing(true)}>Edit</Button>
-            <Button onClick={() => setOpen(true)}>Delete</Button>
-            <Modal
-              title="Delete Entry"
-              content={
-                <p>Are you sure you want to delete {entry.description}?</p>
-              }
-              footer={
-                <Button onClick={() => confirmDelete(entry)}>Delete</Button>
-              }
-              open={open}
-              setOpen={setOpen}
-              includeCancel
-            />
+          <div className="flex gap-2">
+            <Button className="bg-blue-400" onClick={() => setIsEditing(true)}>
+              <PencilIcon />
+            </Button>
+            <Button className="bg-red-400" onClick={() => setOpen(true)}>
+              <TrashIcon />
+            </Button>
           </div>
         )}
       </TableCell>
+      <Modal
+        title="Delete Entry"
+        content={<p>Are you sure you want to delete {entry.description}?</p>}
+        footer={<Button onClick={() => confirmDelete(entry)}>Delete</Button>}
+        open={open}
+        setOpen={setOpen}
+        includeCancel
+      />
     </>
   );
 }
