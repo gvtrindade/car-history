@@ -2,6 +2,7 @@ import CarForm from "@/app/[carId]/CarForm";
 import { getCarById } from "@/app/lib/action/car";
 import { getEntryRecordYearByCarId } from "@/app/lib/action/entry";
 import { Car } from "@/app/lib/definitions";
+import Title from "@/app/ui/title";
 import { auth } from "@/auth";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
@@ -23,7 +24,7 @@ export default async function CarPage({ params }: { params: Params }) {
     <div className="w-2/3 mx-auto">
       {car ? (
         <>
-          <h2 className="text-3xl font-bold text-center">{car.name}</h2>
+          <Title title={car.name} />
 
           <CarForm userId={session.user.id!} car={car} className="my-6" />
 

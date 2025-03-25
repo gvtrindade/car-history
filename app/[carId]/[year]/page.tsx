@@ -2,6 +2,7 @@ import { getCarById } from "@/app/lib/action/car";
 import { Car } from "@/app/lib/definitions";
 import EntryList from "@/app/ui/EntryLIst/entryList";
 import EntryForm from "@/app/ui/entryForm";
+import Title from "@/app/ui/title";
 import { auth } from "@/auth";
 
 type Params = Promise<{ carId: string; year: number }>;
@@ -17,7 +18,7 @@ export default async function YearEntries({ params }: { params: Params }) {
     <div className="flex flex-col gap-6 w-2/3 mx-auto">
       {car ? (
         <>
-          <h2 className="text-3xl font-bold">{car.name}</h2>
+          <Title title={car.name} />
 
           <EntryForm carId={carId} />
           <EntryList userId={session.user.id!} car={car} year={year} />

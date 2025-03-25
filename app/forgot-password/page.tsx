@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
-  usernameOrEmail: z.string(),
+  email: z.string(),
 });
 
 type SchemaProps = z.infer<typeof formSchema>;
@@ -20,6 +20,7 @@ export default function ForgotPassword() {
 
   const form = useForm<SchemaProps>({
     resolver: zodResolver(formSchema),
+    defaultValues: { email: "" },
   });
 
   const submitForm = async (values: SchemaProps) => {
@@ -40,11 +41,7 @@ export default function ForgotPassword() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(submitForm)}>
             <div className="flex flex-col gap-6 md:w-96 md:mx-auto">
-              <TextField
-                name="usernameOrEmail"
-                label="Username or Email"
-                placeholder="Enter your username or email"
-              />
+              <TextField name="email" label="Email" />
 
               <Button type="submit" className="mt-6">
                 Submit

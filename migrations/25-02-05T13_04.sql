@@ -4,7 +4,7 @@ CREATE TABLE "users" (
 	"id" UUID NOT NULL DEFAULT uuid_generate_v4() UNIQUE,
 	"hash" TEXT NOT NULL,
 	"email" TEXT NOT NULL UNIQUE,
-	"is_activated" BOOL NOT NULL DEFAULT FALSE,
+	"is_validated" BOOL NOT NULL DEFAULT FALSE,
 	"is_admin" BOOL NOT NULL DEFAULT FALSE,
 	"is_deleted" BOOL NOT NULL DEFAULT FALSE,
 	PRIMARY KEY("id")

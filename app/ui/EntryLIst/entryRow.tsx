@@ -17,7 +17,7 @@ export default function EntryRow({ entry, key, hideDate }: Props) {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
-    <>
+    <SessionProvider>
       <TableRow key={key}>
         <ViewRow
           entry={entry}
@@ -29,12 +29,10 @@ export default function EntryRow({ entry, key, hideDate }: Props) {
       {isEditing && (
         <TableRow>
           <TableCell colSpan={8}>
-            <SessionProvider>
-              <FormRow entry={entry} setIsEditing={setIsEditing} />
-            </SessionProvider>
+            <FormRow entry={entry} setIsEditing={setIsEditing} />
           </TableCell>
         </TableRow>
       )}
-    </>
+    </SessionProvider>
   );
 }

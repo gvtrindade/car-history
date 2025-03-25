@@ -3,6 +3,7 @@ import { Car } from "@/app/lib/definitions";
 import EntryList from "@/app/ui/EntryLIst/entryList";
 import CarSelect from "@/app/ui/carSelect";
 import EntryForm from "@/app/ui/entryForm";
+import Title from "@/app/ui/title";
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { cookies } from "next/headers";
@@ -36,6 +37,7 @@ export default async function Home({ searchParams }: Props) {
     <div className="w-2/3 mx-auto">
       {car ? (
         <>
+          <Title title="Car History" />
           <EntryForm carId={car.id} />
 
           <div className="flex flex-col gap-4 mt-6 sm:flex-row sm:justify-center">
