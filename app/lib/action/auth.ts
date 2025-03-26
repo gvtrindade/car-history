@@ -1,5 +1,6 @@
 "use server";
 
+import { sendEmail } from "@/app/lib/action/email";
 import {
   createUser,
   createUserToken,
@@ -7,13 +8,12 @@ import {
   getUserByToken,
   updateUser,
 } from "@/app/lib/action/user";
+import { EmailData } from "@/app/lib/definitions";
 import { signIn } from "@/auth";
 import bcrypt from "bcrypt";
 import { randomUUID } from "crypto";
 import { AuthError } from "next-auth";
 import { z } from "zod";
-import { EmailData } from "../definitions";
-import { sendEmail } from "./email";
 
 export async function authenticate(formData: {
   email: string;
@@ -80,8 +80,7 @@ export async function authenticateToken(token: string) {
   try {
     await getUserByToken(token);
     return true;
-  } catch (e) {
-    console.log(e);
+  } catch {
     return false;
   }
 }

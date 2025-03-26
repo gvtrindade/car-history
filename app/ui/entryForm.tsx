@@ -1,7 +1,7 @@
 "use client";
 
 import { postEntry } from "@/app/lib/action/entry";
-import { getStringfiedDate } from "@/app/lib/util";
+import { getErrorMessage, getStringfiedDate } from "@/app/lib/util";
 import DateField from "@/app/ui/FormFields/DateField";
 import NumberField from "@/app/ui/FormFields/NumberField";
 import { TextField } from "@/app/ui/FormFields/TextField";
@@ -10,6 +10,7 @@ import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z.object({
@@ -43,11 +44,11 @@ export default function EntryForm({ carId }: Props) {
   async function submitForm(values: SchemaProps) {
     try {
       await postEntry(values, carId);
-      router.refresh();
       form.reset();
+      toast(`Added ${values.description} successfully`);
+      router.refresh();
     } catch (e) {
-      // Show toast
-      console.log(e);
+      toast(getErrorMessage(e));
     }
   }
 

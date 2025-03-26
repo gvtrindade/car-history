@@ -1,10 +1,10 @@
+import { getUserByEmail } from "@/app/lib/action/user";
 import { authConfig } from "@/auth.config";
 import bcrypt from "bcrypt";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { z } from "zod";
-import { getUserByEmail } from "./app/lib/action/user";
 import { cookies } from "next/headers";
+import { z } from "zod";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,

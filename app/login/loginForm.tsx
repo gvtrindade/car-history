@@ -1,13 +1,15 @@
 "use client";
 
 import { authenticate } from "@/app/lib/action/auth";
+import { getErrorMessage } from "@/app/lib/util";
+import { TextField } from "@/app/ui/FormFields/TextField";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
-import { TextField } from "../ui/FormFields/TextField";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -28,9 +30,8 @@ export default function LoginForm() {
   async function submitForm(values: SchemaProps) {
     try {
       await authenticate(values);
-    } catch (e) {
-      // Show toast
-      console.log(e)
+    } catch (error) {
+      toast(getErrorMessage(error));
     }
   }
 

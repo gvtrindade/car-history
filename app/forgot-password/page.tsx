@@ -2,6 +2,7 @@
 
 import { forgotPassword } from "@/app/lib/action/auth";
 import { TextField } from "@/app/ui/FormFields/TextField";
+import Title from "@/app/ui/title";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -31,7 +32,7 @@ export default function ForgotPassword() {
 
   return (
     <div className="flex flex-col gap-8">
-      <h2>Forgot Password</h2>
+      <Title>Forgot Password</Title>
 
       {messageSent ? (
         <p className="text-green-500">

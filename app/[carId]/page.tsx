@@ -24,7 +24,7 @@ export default async function CarPage({ params }: { params: Params }) {
     <div className="w-2/3 mx-auto">
       {car ? (
         <>
-          <Title title={car.name} />
+          <Title>{car.name}</Title>
 
           <CarForm userId={session.user.id!} car={car} className="my-6" />
 
@@ -46,7 +46,7 @@ export default async function CarPage({ params }: { params: Params }) {
           </div>
         </>
       ) : (
-        <h3 className="font-bold text-4xl text-center">Car not found</h3>
+        <Title>Car not found</Title>
       )}
     </div>
   );

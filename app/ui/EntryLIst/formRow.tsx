@@ -2,7 +2,8 @@
 
 import { putEntry } from "@/app/lib/action/entry";
 import { Entry } from "@/app/lib/definitions";
-import { getStringfiedDate } from "@/app/lib/util";
+import { getErrorMessage, getStringfiedDate } from "@/app/lib/util";
+import Modal from "@/app/ui/Modal";
 import DateField from "@/app/ui/FormFields/DateField";
 import NumberField from "@/app/ui/FormFields/NumberField";
 import { TextField } from "@/app/ui/FormFields/TextField";
@@ -13,8 +14,8 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
-import Modal from "../Modal";
 
 const formSchema = z.object({
   date: z.string(),
@@ -71,13 +72,13 @@ export default function FormRow({ entry, setIsEditing }: Props) {
         await putEntry(session.user.id, editEntry);
         setOpen(false);
         setIsEditing(false);
+        toast(`Edited ${editEntry.description} successfully`);
         router.refresh();
       } else {
-        throw Error("Invalid user")
+        throw Error("Invalid user");
       }
     } catch (e) {
-      //Show toast
-      console.log(e);
+      toast(getErrorMessage(e));
     }
   };
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { Car } from "@/app/lib/definitions";
 import {
   Select,
   SelectContent,
@@ -8,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useRouter } from "next/navigation";
-import { Car } from "../lib/definitions";
+import { toast } from "sonner";
 import { setCookies } from "../lib/cookies";
 
 type Props = {
@@ -18,9 +19,11 @@ type Props = {
 
 export default function CarSelect({ defaultId, options }: Props) {
   const router = useRouter();
-  
+
   function changeCar(carId: string) {
     setCookies("carId", carId);
+    const car = options.find((c) => c.id === carId);
+    toast(car ? `Showing ${car.name}'s history` : "Changing car ");
     router.push(`?carId=${carId}`);
   }
 

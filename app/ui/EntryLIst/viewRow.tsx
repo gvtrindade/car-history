@@ -2,7 +2,7 @@
 
 import { deleteEntryById } from "@/app/lib/action/entry";
 import { Entry } from "@/app/lib/definitions";
-import { includeZero } from "@/app/lib/util";
+import { getErrorMessage, includeZero } from "@/app/lib/util";
 import Modal from "@/app/ui/Modal";
 import { Button } from "@/components/ui/button";
 import { TableCell } from "@/components/ui/table";
@@ -10,6 +10,7 @@ import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 type Props = {
   entry: Entry;
@@ -32,14 +33,14 @@ export default function ViewRow({
     try {
       if (session?.user && session?.user.id) {
         await deleteEntryById(session.user.id, entry);
-        router.refresh();
         setOpen(false);
+        toast(`Deleted ${entry.description} successfully`);
+        router.refresh();
       } else {
         throw Error("Invalid user");
       }
-    } catch (error) {
-      console.log(error);
-      // Show delete error toast
+    } catch (e) {
+      toast(getErrorMessage(e));
     }
   }
 

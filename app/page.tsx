@@ -37,7 +37,7 @@ export default async function Home({ searchParams }: Props) {
     <div className="w-2/3 mx-auto">
       {car ? (
         <>
-          <Title title="Car History" />
+          <Title>Car History</Title>
           <EntryForm carId={car.id} />
 
           <div className="flex flex-col gap-4 mt-6 sm:flex-row sm:justify-center">
@@ -53,7 +53,7 @@ export default async function Home({ searchParams }: Props) {
           />
         </>
       ) : (
-        <h3 className="text-3xl font-bold"> Register a car to view entries </h3>
+        <Title>Register a car to view entries </Title>
       )}
     </div>
   );

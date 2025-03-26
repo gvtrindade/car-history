@@ -3,6 +3,7 @@
 import { signUp } from "@/app/lib/action/auth";
 import { passwordValidationRegex } from "@/app/lib/util";
 import { TextField } from "@/app/ui/FormFields/TextField";
+import Title from "@/app/ui/title";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -50,7 +51,7 @@ export default function Page() {
 
   return (
     <>
-      <h2>Create User</h2>
+      <Title>Create User</Title>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(submitForm)}>
@@ -75,9 +76,7 @@ export default function Page() {
               <Button type="button" onClick={() => router.back()}>
                 Back
               </Button>
-              <Button type="submit">
-                Sign up
-              </Button>
+              <Button type="submit">Sign up</Button>
             </div>
           </div>
         </form>

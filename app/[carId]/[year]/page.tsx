@@ -18,13 +18,13 @@ export default async function YearEntries({ params }: { params: Params }) {
     <div className="flex flex-col gap-6 w-2/3 mx-auto">
       {car ? (
         <>
-          <Title title={car.name} />
+          <Title>{car.name}</Title>
 
           <EntryForm carId={carId} />
           <EntryList userId={session.user.id!} car={car} year={year} />
         </>
       ) : (
-        <h3 className="font-bold text-4xl text-center">Car not found</h3>
+        <Title>Car not found</Title>
       )}
     </div>
   );

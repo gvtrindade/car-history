@@ -1,5 +1,7 @@
 import { validateUser } from "@/app/lib/action/auth";
+import { getErrorMessage } from "@/app/lib/util";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 type Params = Promise<{ token: string }>;
 
@@ -11,8 +13,7 @@ export default async function Page({ params }: { params: Params }) {
     await validateUser(token);
     isEmailValidated = true;
   } catch (e) {
-    // do nothing
-    console.log(e);
+    toast(getErrorMessage(e));
   }
 
   return (

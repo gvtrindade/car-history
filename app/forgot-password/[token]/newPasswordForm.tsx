@@ -1,13 +1,14 @@
 "use client";
 
 import { resetPassword } from "@/app/lib/action/auth";
-import { passwordValidationRegex } from "@/app/lib/util";
+import { getErrorMessage, passwordValidationRegex } from "@/app/lib/util";
 import { TextField } from "@/app/ui/FormFields/TextField";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z
@@ -40,10 +41,10 @@ export default function NewPasswordForm({ token }: { token: string }) {
   const submitForm = async (values: SchemaProps) => {
     try {
       await resetPassword(values, token);
+      toast("Password reset successfully");
       router.push("/login");
     } catch (e) {
-      // Show Toast
-      console.log(e) 
+      toast(getErrorMessage(e));
     }
   };
 
@@ -62,9 +63,7 @@ export default function NewPasswordForm({ token }: { token: string }) {
             placeholder="Confirm your password"
           />
 
-          <Button type="submit">
-            Reset password
-          </Button>
+          <Button type="submit">Reset password</Button>
         </div>
       </form>
     </Form>

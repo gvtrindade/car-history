@@ -5,6 +5,7 @@ Car
 [x] The user should edit the car data from the car page
 [x] The home page should show the data of the last selected car
 [x] The user should be able to change the selected car in the home page
+[ ] Users shoud be able to share a car with other users
 
 Entry
 [x] The user should be able to create a new entry from the home page
@@ -20,7 +21,13 @@ User
 [x] A person should be able to register with their email
 [ ] A user should be able to edit their email and password
 [x] A user should only see their cars
-[ ] Actions should trigger a toaster to inform the user
+[x] Actions should trigger a toaster to inform the user
 
 Bugs
 [x] Date is incorrect when registering an entry
+
+Setup
+[ ] Add manifest
+[ ] Add page metadata
+[ ] Add icon
+[ ] Implement error monitoring

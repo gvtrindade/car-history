@@ -1,5 +1,6 @@
+import AddForm from "@/app/add-car/addForm";
+import Title from "@/app/ui/title";
 import { auth } from "@/auth";
-import AddForm from "./addForm";
 
 export default async function Page() {
   const session = await auth();
@@ -7,7 +8,7 @@ export default async function Page() {
 
   return (
     <div className="w-2/3 mx-auto">
-      <h3 className="text-3xl font-bold">Add car</h3>
+      <Title>Add car</Title>
 
       <AddForm userId={session.user.id!} className="mt-6" />
     </div>

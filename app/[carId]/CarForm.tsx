@@ -12,7 +12,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
+import { getErrorMessage } from "../lib/util";
 
 const formSchema = z.object({
   name: z.string().min(4, { message: "Car name must have at least 4 letters" }),
@@ -66,11 +68,11 @@ export default function CarForm({ userId, car, className = "" }: Props) {
 
     try {
       await putCar(userId, editedCar);
-      router.refresh();
       setIsEditing(false);
+      toast(`Edited ${editedCar.name} successfully`);
+      router.refresh();
     } catch (e) {
-      // Show toast
-      console.log(e);
+      toast(getErrorMessage(e));
     }
   }
 
