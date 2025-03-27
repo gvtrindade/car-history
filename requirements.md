@@ -29,5 +29,5 @@ Bugs
 Setup
 [ ] Add manifest
 [x] Add page metadata
-[ ] Add icon
+[x] Add icon
 [ ] Implement error monitoring

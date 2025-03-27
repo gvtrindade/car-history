@@ -1,4 +1,4 @@
-import CarForm from "@/app/[carId]/CarForm";
+import CarForm from "@/app/car/[carId]/CarForm";
 import { getCarById } from "@/app/lib/action/car";
 import { getEntryRecordYearByCarId } from "@/app/lib/action/entry";
 import { Car } from "@/app/lib/definitions";
@@ -40,7 +40,7 @@ export default async function CarPage({ params }: { params: Params }) {
             {entryRecordYears.length > 0 ? (
               entryRecordYears.map((year: number, key: number) => (
                 <p className="mt-2" key={key}>
-                  <Link href={`/${carId}/${year}`} className="hover:underline">
+                  <Link href={`/car/${carId}/${year}`} className="hover:underline">
                     {year}
                   </Link>
                 </p>

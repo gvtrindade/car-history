@@ -1,8 +1,9 @@
 "use client";
 
-import CarData from "@/app/[carId]/CarData";
+import CarData from "@/app/car/[carId]/CarData";
 import { deleteCarById, putCar } from "@/app/lib/action/car";
 import { Car } from "@/app/lib/definitions";
+import { getErrorMessage } from "@/app/lib/util";
 import NumberField from "@/app/ui/FormFields/NumberField";
 import { TextField } from "@/app/ui/FormFields/TextField";
 import Modal from "@/app/ui/Modal";
@@ -14,7 +15,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { getErrorMessage } from "../lib/util";
 
 const formSchema = z.object({
   name: z.string().min(4, { message: "Car name must have at least 4 letters" }),

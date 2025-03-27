@@ -19,9 +19,9 @@ type Props = {
 export default async function AppSidebar({ isUserLogged, cars }: Props) {
   return (
     <Sidebar>
-      <SidebarHeader className="text-2xl font-bold hover:underline">
-        <Link href="/">
-          <h2>Car History</h2>
+      <SidebarHeader>
+        <Link href="/" className="hover:underline">
+          <h2 className="text-2xl font-bold">Car History</h2>
         </Link>
       </SidebarHeader>
 
@@ -39,7 +39,7 @@ export default async function AppSidebar({ isUserLogged, cars }: Props) {
             {cars.map((car) => (
               <SidebarMenuItem key={car.id}>
                 <SidebarMenuButton asChild>
-                  <Link href={`/${car.id}`}>
+                  <Link href={`/car/${car.id}`}>
                     <span>{car.name}</span>
                   </Link>
                 </SidebarMenuButton>
@@ -54,7 +54,16 @@ export default async function AppSidebar({ isUserLogged, cars }: Props) {
             </SidebarMenuItem>
 
             <SidebarMenuItem className="absolute bottom-6 w-full">
-              <div className="flex justify-center">
+              <div className="text-wrap w-2/3 mx-auto">
+                <Link
+                  href="https://www.flaticon.com/free-icons/travel"
+                  title="travel icons"
+                  className="text-xs text-gray-400"
+                >
+                  Travel icons created by juicy_fish - Flaticon
+                </Link>
+              </div>
+              <div className="flex justify-center mt-4">
                 <LogoutButton />
               </div>
             </SidebarMenuItem>
