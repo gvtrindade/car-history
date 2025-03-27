@@ -40,7 +40,10 @@ export default async function CarPage({ params }: { params: Params }) {
             {entryRecordYears.length > 0 ? (
               entryRecordYears.map((year: number, key: number) => (
                 <p className="mt-2" key={key}>
-                  <Link href={`/car/${carId}/${year}`} className="hover:underline">
+                  <Link
+                    href={`/car/${carId}/${year}`}
+                    className="hover:underline"
+                  >
                     {year}
                   </Link>
                 </p>

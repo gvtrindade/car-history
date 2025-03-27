@@ -1,0 +1,1 @@
+ALTER TABLE cars ADD linked_users UUID[] DEFAULT '{}';

@@ -9,8 +9,14 @@ export async function fetchEntriesByCarAndUserByYear(
   year: number
 ) {
   const entries = await sql<Entry[]>`
-    SELECT * FROM entries 
-    WHERE car_id IN (SELECT id FROM cars WHERE id = ${carId} AND user_id = ${userId}) 
+    SELECT * 
+    FROM entries 
+    WHERE car_id IN (
+      SELECT id
+      FROM cars 
+      WHERE id = ${carId} 
+        AND (user_id = ${userId} OR ${userId} = ANY(linked_users))
+    ) 
       AND date_part('year', date) = ${year}
     ORDER BY date desc
   `;
@@ -23,8 +29,14 @@ export async function fetchEntryRecordYearByCarId(
 ) {
   let years = [];
   const row = await sql`
-    SELECT ARRAY_AGG(DISTINCT EXTRACT(YEAR FROM date)) AS years FROM entries 
-    WHERE car_id IN (SELECT id FROM cars WHERE id = ${carId} AND user_id = ${userId})
+    SELECT ARRAY_AGG(DISTINCT EXTRACT(YEAR FROM date)) AS years 
+    FROM entries 
+    WHERE car_id IN (
+      SELECT id 
+      FROM cars 
+      WHERE id = ${carId} 
+        AND (user_id = ${userId} OR ${userId} = ANY(linked_users))
+    )
   `;
 
   if (row.length > 0 && row[0].years !== null) {
@@ -53,7 +65,12 @@ export async function updateEntry(entry: Entry, userId: string) {
       place = ${entry.place},
       tags = ${entry.tags}
     WHERE id = ${entry.id} 
-      AND car_id IN (SELECT id FROM cars WHERE id = ${entry.car_id} AND user_id = ${userId})
+      AND car_id IN (
+        SELECT id 
+        FROM cars 
+        WHERE id = ${entry.car_id} 
+          AND (user_id = ${userId} OR ${userId} = ANY(linked_users))
+      )
   `;
   if (!row) {
     throw new Error("Could not update entry");
@@ -64,7 +81,12 @@ export async function deleteEntry(entry: Entry, userId: string) {
   const row = await sql`
     DELETE FROM entries 
     WHERE id = ${entry.id} 
-      AND car_id IN (SELECT id FROM cars WHERE id = ${entry.car_id} AND user_id = ${userId})
+      AND car_id IN (
+        SELECT id 
+        FROM cars 
+        WHERE id = ${entry.car_id} 
+          AND (user_id = ${userId} OR ${userId} = ANY(linked_users))
+      )
   `;
   if (!row) {
     throw new Error("Could not delete entry");

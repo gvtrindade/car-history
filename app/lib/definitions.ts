@@ -8,6 +8,8 @@ export type Car = {
   plate: string;
   renavam: string;
   aquired_year: number;
+  user_id: string;
+  linked_emails?: string[];
 };
 
 export type Entry = {

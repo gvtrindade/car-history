@@ -1,20 +1,38 @@
 "use server";
 
+import sql from "@/app/lib/db";
 import { User } from "@/app/lib/definitions";
-import sql from "../db";
 
 type NewUser = {
   email: string;
   hash: string;
 };
 
-export async function getUserByEmail(email: string): Promise<User | undefined> {
+export async function fetchUserByEmail(
+  email: string
+): Promise<User | undefined> {
   try {
     const rows = await sql<User[]>`
-      SELECT * FROM users 
-      WHERE LOWER(email) = LOWER(${email})
+    SELECT * FROM users 
+    WHERE email = LOWER(${email})
     `;
     return rows[0];
+  } catch (err) {
+    console.error("Database Error:", err);
+    throw new Error("Failed to fetch user.");
+  }
+}
+
+export async function fetchUsersByEmail(
+  emails: string[]
+): Promise<string[]> {
+  try {
+    const rows = await sql`
+      SELECT ARRAY_AGG(id) as ids
+      FROM users 
+      WHERE email = ANY(${emails})
+    `;
+    return rows[0].ids;
   } catch (err) {
     console.error("Database Error:", err);
     throw new Error("Failed to fetch user.");
@@ -41,7 +59,7 @@ export async function createUser(user: NewUser) {
   try {
     await sql`
       INSERT INTO users (email, hash) 
-      VALUES (${user.email}, ${user.hash})
+      VALUES (LOWER(${user.email}), ${user.hash})
     `;
   } catch (err) {
     console.error("Database Error:", err);

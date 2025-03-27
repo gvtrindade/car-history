@@ -1,4 +1,4 @@
-import { getUserByEmail } from "@/app/lib/action/user";
+import { fetchUserByEmail } from "@/app/lib/data/user";
 import { authConfig } from "@/auth.config";
 import bcrypt from "bcrypt";
 import NextAuth from "next-auth";
@@ -20,7 +20,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         if (parsedCredentials.success) {
           const { email, password } = parsedCredentials.data;
-          const user = await getUserByEmail(email);
+          const user = await fetchUserByEmail(email);
 
           if (!user || !user.is_validated) return null;
 

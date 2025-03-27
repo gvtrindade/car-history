@@ -25,6 +25,7 @@ const formSchema = z.object({
   plate: z.string(),
   renavam: z.string(),
   aquired_year: z.coerce.number(),
+  linked_emails: z.string().optional(),
 });
 
 type SchemaProps = z.infer<typeof formSchema>;
@@ -50,6 +51,7 @@ export default function CarForm({ userId, car, className = "" }: Props) {
       plate: car.plate,
       renavam: car.renavam,
       aquired_year: car.aquired_year,
+      linked_emails: car.linked_emails?.join(";"),
     },
   });
 
@@ -64,6 +66,8 @@ export default function CarForm({ userId, car, className = "" }: Props) {
       plate: values.plate,
       renavam: values.renavam,
       aquired_year: values.aquired_year,
+      user_id: car.user_id,
+      linked_emails: values.linked_emails?.split(";") ?? [],
     };
 
     try {
@@ -98,6 +102,11 @@ export default function CarForm({ userId, car, className = "" }: Props) {
                 <TextField name="plate" label="Plate" />
                 <TextField name="renavam" label="Renavam" />
                 <NumberField name="aquired_year" label="Aquired in year" />
+                <TextField
+                  name="linked_emails"
+                  label="Shared emails"
+                  disabled={userId !== car.user_id}
+                />
               </div>
             </div>
 
@@ -139,6 +148,10 @@ export default function CarForm({ userId, car, className = "" }: Props) {
               <CarData label="Plate" data={car.plate} />
               <CarData label="Renavam" data={car.renavam} />
               <CarData label="Aquired in year" data={car.aquired_year} />
+              <CarData
+                label="Shared Emails"
+                data={car.linked_emails?.join("; ") ?? "-"}
+              />
             </div>
           </div>
         </>

@@ -4,10 +4,10 @@ import { sendEmail } from "@/app/lib/action/email";
 import {
   createUser,
   createUserToken,
-  getUserByEmail,
+  fetchUserByEmail,
   getUserByToken,
   updateUser,
-} from "@/app/lib/action/user";
+} from "@/app/lib/data/user";
 import { EmailData } from "@/app/lib/definitions";
 import { signIn } from "@/auth";
 import bcrypt from "bcrypt";
@@ -45,7 +45,7 @@ export async function signUp(formData: { [key: string]: string }) {
 
   if (parsedCredentials.success) {
     const { email, password } = parsedCredentials.data;
-    const user = await getUserByEmail(email);
+    const user = await fetchUserByEmail(email);
 
     if (user) throw new Error("User already exists");
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -94,7 +94,7 @@ export async function forgotPassword(formData: { [key: string]: string }) {
 
   if (parsedCredentials.success) {
     const { email } = parsedCredentials.data;
-    const user = await getUserByEmail(email);
+    const user = await fetchUserByEmail(email);
 
     if (!user) return null;
 
