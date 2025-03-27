@@ -28,6 +28,6 @@ Bugs
 
 Setup
 [ ] Add manifest
-[ ] Add page metadata
+[x] Add page metadata
 [ ] Add icon
 [ ] Implement error monitoring

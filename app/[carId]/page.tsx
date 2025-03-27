@@ -5,7 +5,12 @@ import { Car } from "@/app/lib/definitions";
 import Title from "@/app/ui/title";
 import { auth } from "@/auth";
 import { Separator } from "@/components/ui/separator";
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Car",
+};
 
 type Params = Promise<{ carId: string }>;
 

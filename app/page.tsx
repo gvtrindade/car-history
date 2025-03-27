@@ -6,7 +6,12 @@ import EntryForm from "@/app/ui/entryForm";
 import Title from "@/app/ui/title";
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
+import { Metadata } from "next";
 import { cookies } from "next/headers";
+
+export const metadata: Metadata = {
+  title: "Home - Car History",
+};
 
 type Props = {
   searchParams: Promise<{ [key: string]: string }>;

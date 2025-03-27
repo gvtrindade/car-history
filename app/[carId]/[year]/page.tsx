@@ -4,6 +4,11 @@ import EntryList from "@/app/ui/EntryLIst/entryList";
 import EntryForm from "@/app/ui/entryForm";
 import Title from "@/app/ui/title";
 import { auth } from "@/auth";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Expenses",
+};
 
 type Params = Promise<{ carId: string; year: number }>;
 
