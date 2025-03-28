@@ -32,6 +32,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
+  if (!session || !session.user) return null;
 
   let cars: Car[] = [];
   if (session?.user?.id) {
@@ -44,7 +45,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SidebarProvider defaultOpen={false}>
-          <AppSidebar isUserLogged={session?.user !== undefined} cars={cars} />
+          <AppSidebar session={session!} cars={cars} />
 
           <main className="w-full pb-10">
             <SidebarTrigger />

@@ -36,6 +36,7 @@ export default function NewPasswordForm({ token }: { token: string }) {
   const router = useRouter();
   const form = useForm<SchemaProps>({
     resolver: zodResolver(formSchema),
+    defaultValues: { password: "", passwordConfirm: "" },
   });
 
   const submitForm = async (values: SchemaProps) => {

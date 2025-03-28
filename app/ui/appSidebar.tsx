@@ -1,5 +1,6 @@
 import { Car } from "@/app/lib/definitions";
 import LogoutButton from "@/app/ui/logoutButton";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   Sidebar,
   SidebarContent,
@@ -9,14 +10,15 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { HomeIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
+import { Session } from "next-auth";
 import Link from "next/link";
 
 type Props = {
-  isUserLogged: boolean;
+  session: Session;
   cars: Car[];
 };
 
-export default async function AppSidebar({ isUserLogged, cars }: Props) {
+export default async function AppSidebar({ session, cars }: Props) {
   return (
     <Sidebar>
       <SidebarHeader>
@@ -26,7 +28,7 @@ export default async function AppSidebar({ isUserLogged, cars }: Props) {
       </SidebarHeader>
 
       <SidebarContent>
-        {isUserLogged ? (
+        {session?.user !== undefined ? (
           <SidebarMenu className="flex flex-col gap-2 mt-6">
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
@@ -58,12 +60,20 @@ export default async function AppSidebar({ isUserLogged, cars }: Props) {
                 <Link
                   href="https://www.flaticon.com/free-icons/travel"
                   title="travel icons"
-                  className="text-xs text-gray-400"
+                  className="text-xs text-gray-400 text-center"
                 >
-                  Travel icons created by juicy_fish - Flaticon
+                  <p>Travel icons by juicy_fish</p>
+                  <p>Flaticon</p>
                 </Link>
               </div>
-              <div className="flex justify-center mt-4">
+              <div className="flex justify-around mt-4">
+                <Link href={`/user/${session.user.id}`}>
+                  <Avatar>
+                    <AvatarFallback>
+                      {session.user.email![0].toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                </Link>
                 <LogoutButton />
               </div>
             </SidebarMenuItem>

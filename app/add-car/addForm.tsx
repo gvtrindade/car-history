@@ -46,6 +46,7 @@ export default function AddForm({ userId, className = "" }: Props) {
   const submitForm = async (values: SchemaProps) => {
     const car: Car = {
       id: "",
+      user_id: userId,
       name: values.name,
       model: values.model,
       year: values.year,

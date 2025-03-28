@@ -130,7 +130,7 @@ export async function resetPassword(
 
     const updatedUser = {
       ...user,
-      password: hashedPassword,
+      hash: hashedPassword,
     };
 
     await updateUser(updatedUser);

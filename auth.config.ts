@@ -22,15 +22,9 @@ export const authConfig = {
 
       const isOnLogin = nextUrl.pathname.includes("/login");
       const isOnSignup = nextUrl.pathname.includes("/signup");
-      const isOnPasswordReset = nextUrl.pathname.includes("/forgot-password");
-      if (
-        !isOnLogin &&
-        !isOnSignup &&
-        !isOnPasswordReset &&
-        !isLoggedIn
-      ) {
+      if (!isOnLogin && !isOnSignup && !isLoggedIn) {
         return false;
-      } else if ((isOnLogin || isOnSignup || isOnPasswordReset) && isLoggedIn) {
+      } else if ((isOnLogin || isOnSignup) && isLoggedIn) {
         return Response.redirect(new URL("/", nextUrl));
       }
       return true;
