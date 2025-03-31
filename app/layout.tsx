@@ -32,7 +32,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
-  if (!session || !session.user) return null;
 
   let cars: Car[] = [];
   if (session?.user?.id) {
