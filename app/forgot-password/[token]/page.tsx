@@ -3,9 +3,8 @@ import { authenticateToken } from "@/app/lib/action/auth";
 import Title from "@/app/ui/title";
 import { Suspense } from "react";
 
-type Params = Promise<{ token: string }>;
 type Props = {
-  params: Params;
+  params: Promise<{ token: string }>;
   searchParams: Promise<{ [key: string]: string }>;
 };
 

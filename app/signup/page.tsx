@@ -50,7 +50,7 @@ export default function Page() {
   };
 
   return (
-    <>
+    <div className="w-2/3 mx-auto">
       <Title>Create User</Title>
 
       <Form {...form}>
@@ -72,7 +72,7 @@ export default function Page() {
               placeholder="Confirm your password"
             />
 
-            <div className="flex gap-6">
+            <div className="flex justify-center gap-6">
               <Button type="button" onClick={() => router.back()}>
                 Back
               </Button>
@@ -81,6 +81,6 @@ export default function Page() {
           </div>
         </form>
       </Form>
-    </>
+    </div>
   );
 }

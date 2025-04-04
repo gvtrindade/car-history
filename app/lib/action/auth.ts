@@ -73,6 +73,8 @@ export async function validateUser(token: string) {
   const user = await getUserByToken(token);
   if (user) {
     await updateUser({ ...user, is_validated: true });
+  } else {
+    throw Error("User not found");
   }
 }
 

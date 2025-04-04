@@ -5,10 +5,9 @@ import {
   insertCar,
   updateCar,
 } from "@/app/lib/data/car";
+import { fetchUsersByEmail } from "@/app/lib/data/user";
 import { Car } from "@/app/lib/definitions";
-import { fetchUsersByEmail } from "../data/user";
-import { validateEmail } from "../util";
-import { fetchCarLastMileage } from "../data/entry";
+import { validateEmail } from "@/app/lib/util";
 
 export async function getCarsByUser(userId: string) {
   return await fetchCarsByUser(userId);

@@ -9,7 +9,7 @@ export default function Page() {
   return (
     <>
       <Title>Car History</Title>
-      <div className="flex flex-col gap-8 px-10 md:flex-row md:justify-center md:pt-10">
+      <div className="flex flex-col gap-8 px-10 md:flex-row md:justify-center md:pt-10 mt-6">
         <LoginForm />
 
         <div className="border"></div>
