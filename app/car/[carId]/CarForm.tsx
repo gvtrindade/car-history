@@ -32,10 +32,16 @@ type SchemaProps = z.infer<typeof formSchema>;
 type Props = {
   userId: string;
   car: Car;
+  lastMileage: number;
   className?: string;
 };
 
-export default function CarForm({ userId, car, className = "" }: Props) {
+export default function CarForm({
+  userId,
+  car,
+  lastMileage,
+  className = "",
+}: Props) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [open, setOpen] = useState(false);
@@ -142,6 +148,7 @@ export default function CarForm({ userId, car, className = "" }: Props) {
               <CarData label="Model" data={car.model} />
               <CarData label="Year" data={car.year} />
               <CarData label="Brand" data={car.brand} />
+              <CarData label="Last Mileage" data={lastMileage} />
             </div>
             <div className="flex w-full flex-col gap-6">
               <CarData label="Color" data={car.color} />

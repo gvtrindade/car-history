@@ -8,6 +8,7 @@ import {
 import { Car } from "@/app/lib/definitions";
 import { fetchUsersByEmail } from "../data/user";
 import { validateEmail } from "../util";
+import { fetchCarLastMileage } from "../data/entry";
 
 export async function getCarsByUser(userId: string) {
   return await fetchCarsByUser(userId);

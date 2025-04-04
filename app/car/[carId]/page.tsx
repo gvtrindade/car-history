@@ -1,6 +1,9 @@
 import CarForm from "@/app/car/[carId]/CarForm";
 import { getCarById } from "@/app/lib/action/car";
-import { getEntryRecordYearByCarId } from "@/app/lib/action/entry";
+import {
+  getCarLastMileage,
+  getEntryRecordYearByCarId,
+} from "@/app/lib/action/entry";
 import { Car } from "@/app/lib/definitions";
 import Title from "@/app/ui/title";
 import { auth } from "@/auth";
@@ -20,6 +23,7 @@ export default async function CarPage({ params }: { params: Params }) {
 
   const { carId } = await params;
   const car: Car = await getCarById(session.user.id!, carId);
+  const lastMileage: number = await getCarLastMileage(session.user.id!, carId);
   const entryRecordYears = await getEntryRecordYearByCarId(
     session.user.id!,
     carId
@@ -31,7 +35,12 @@ export default async function CarPage({ params }: { params: Params }) {
         <>
           <Title>{car.name}</Title>
 
-          <CarForm userId={session.user.id!} car={car} className="my-6" />
+          <CarForm
+            userId={session.user.id!}
+            car={car}
+            lastMileage={lastMileage}
+            className="my-6"
+          />
 
           <Separator />
 

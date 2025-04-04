@@ -1,11 +1,12 @@
 import {
   deleteEntry,
+  fetchCarLastMileage,
   fetchEntriesByCarAndUserByYear,
   fetchEntryRecordYearByCarId,
   insertEntry,
   updateEntry,
 } from "@/app/lib/data/entry";
-import { Entry } from "../definitions";
+import { Entry } from "@/app/lib/definitions";
 
 export async function getEntriesByCarAndYear(
   userId: string,
@@ -21,7 +22,10 @@ export async function getEntryRecordYearByCarId(userId: string, carId: string) {
   return years;
 }
 
-export async function postEntry(entry: {[key: string]: string | number}, carId: string) {
+export async function postEntry(
+  entry: { [key: string]: string | number },
+  carId: string
+) {
   await insertEntry(entry, carId);
 }
 
@@ -32,4 +36,8 @@ export async function putEntry(userId: string, entry: Entry) {
 
 export async function deleteEntryById(userId: string, entry: Entry) {
   await deleteEntry(entry, userId);
+}
+
+export async function getCarLastMileage(userId: string, carId: string) {
+  return await fetchCarLastMileage(carId, userId);
 }
