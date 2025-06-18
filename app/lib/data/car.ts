@@ -27,7 +27,7 @@ export async function fetchCarById(
     WHERE ${
       carId
         ? sql`id = ${carId} AND (user_id = ${userId} OR ${userId} = ANY(linked_users))`
-        : sql`user_id = ${userId} LIMIT 1`
+        : sql`user_id = ${userId} OR ${userId} = ANY(linked_users) LIMIT 1`
     }
     `;
   return data[0];
