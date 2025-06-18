@@ -40,4 +40,6 @@ Authentication is also fully implemented in the project, so anyone can create a 
 
 Users can only see their's and shared cars, trying to access a car that is not valid results in an error.
 
+It was made to be primarily accessed by phones, but the responsive design also adapts to tablet and computers screens.
+
 The app is completly self hosted, using the Coolify Platform. The whole CI/CD pipeline was implemented by me, including setting up the database and configuring the tunnel to expose the app to the internet with my domain.
