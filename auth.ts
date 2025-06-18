@@ -29,6 +29,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           if (isPasswordCorrect) {
             const cookieStore = await cookies();
             cookieStore.set("userId", user.id);
+
+            if (cookieStore.has("carId")) {
+              cookieStore.delete("carId");
+            }
+
             return user;
           }
         }
