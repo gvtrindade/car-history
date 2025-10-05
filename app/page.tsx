@@ -1,11 +1,12 @@
 import { getCarById, getCarsByUser } from "@/app/lib/action/car";
-import { Car } from "@/app/lib/definitions";
+import { getEntriesByCarAndYear } from "@/app/lib/action/entry";
+import { Car, Entry } from "@/app/lib/definitions";
 import EntryList from "@/app/ui/EntryLIst/entryList";
 import CarSelect from "@/app/ui/carSelect";
 import EntryForm from "@/app/ui/entryForm";
+import ExportButton from "@/app/ui/exportButton";
 import Title from "@/app/ui/title";
 import { auth } from "@/auth";
-import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
 
@@ -37,6 +38,9 @@ export default async function Home({ searchParams }: Props) {
   const year = new Date().getFullYear();
   const car: Car = await getCarById(session.user.id!, carId);
   const userCars: Car[] = await getCarsByUser(session.user.id!);
+  const entries: Entry[] = car
+    ? await getEntriesByCarAndYear(session.user.id!, car.id, year)
+    : [];
 
   return (
     <div className="w-2/3 mx-auto">
@@ -47,7 +51,7 @@ export default async function Home({ searchParams }: Props) {
 
           <div className="flex flex-col gap-4 mt-6 sm:flex-row sm:justify-center">
             <CarSelect defaultId={car.id} options={userCars} />
-            <Button disabled>Export</Button>
+            <ExportButton entries={entries} carName={car.name} year={year} />
           </div>
 
           <EntryList
