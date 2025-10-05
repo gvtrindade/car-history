@@ -22,9 +22,13 @@ User
 [/] A user should be able to edit their email and password
 [x] A user should only see their cars
 [x] Actions should trigger a toaster to inform the user
+[x] Users should be able to create new profiles with a Google Account
 
 Bugs
 [x] Date is incorrect when registering an entry
+[ ] Register new entry only works the second time
+[ ] Session endpoint is called many times in one page
+[x] Month > 9 is shown with 0 before
 
 Setup
 [ ] Add manifest

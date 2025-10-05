@@ -3,6 +3,7 @@ import { authConfig } from "@/auth.config";
 import bcrypt from "bcrypt";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
 import { cookies } from "next/headers";
 import { z } from "zod";
 
@@ -41,5 +42,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         return null;
       },
     }),
+    Google, 
   ],
 });

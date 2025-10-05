@@ -4,7 +4,7 @@ export function getStringfiedDate(date?: Date) {
 }
 
 export function includeZero(num: number) {
-  return num > 10 ? num : "0" + num;
+  return num < 10 ? "0" + num : num;
 }
 
 export function getErrorMessage(error: unknown) {

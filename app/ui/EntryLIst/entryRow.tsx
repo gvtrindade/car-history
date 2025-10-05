@@ -17,7 +17,7 @@ export default function EntryRow({ entry, key, hideDate }: Props) {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
-    <SessionProvider>
+    <SessionProvider refetchOnWindowFocus={false}>
       <TableRow key={key}>
         <ViewRow
           entry={entry}
