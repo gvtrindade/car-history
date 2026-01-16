@@ -103,7 +103,6 @@ export async function fetchCarLastMileage(carId: string, userId: string) {
     INNER JOIN cars c ON c.id = e.car_id
     WHERE e.car_id = ${carId}
       AND (c.user_id = ${userId} OR ${userId} = ANY(c.linked_users))
-      AND date_part('year', e.date) = ${new Date().getFullYear()}
     ORDER BY e.date desc
     LIMIT 1
   `;
