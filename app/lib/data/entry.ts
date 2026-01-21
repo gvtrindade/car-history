@@ -106,5 +106,5 @@ export async function fetchCarLastMileage(carId: string, userId: string) {
     ORDER BY e.date desc
     LIMIT 1
   `;
-  return row[0].odometer;
+  return row[0]?.odometer != null ? row[0].odometer : 0;
 }
