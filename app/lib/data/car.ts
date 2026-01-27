@@ -20,7 +20,7 @@ export async function fetchCarById(
   const data = await sql<Car[]>`
     SELECT *, (
       SELECT ARRAY_AGG(u.email) as linked_emails
-      FROM users u
+      FROM "user" u
       WHERE u.id = ANY(c.linked_users)
     ) as linked_emails
     FROM cars c
@@ -90,7 +90,7 @@ export async function deleteCar(carId: string, userId: string) {
 export async function fetchLinkedCarEmails(carId: string, userId: string) {
   const row = await sql`
     SELECT ARRAY_AGG(u.email) as linked_emails
-    FROM users u
+    FROM "user" u
     INNER JOIN cars c ON c.id = uc.car_id
     WHERE c.id = ${carId}
       AND c.user_id = ${userId}
@@ -104,7 +104,7 @@ export async function fetchLinkedCarEmails(carId: string, userId: string) {
 export async function fetchLinkedCarUsers(carId: string, linkedEmails: string[]) {
   const row = await sql`
     SELECT ARRAY_AGG(u.email) as linked_emails
-    FROM users u
+    FROM "user" u
     INNER JOIN cars c ON c.id = uc.car_id
     WHERE c.id = ${carId}
       AND c.user_id = ${linkedEmails.join(",")}

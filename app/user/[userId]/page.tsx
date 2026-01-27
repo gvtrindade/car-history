@@ -1,21 +1,16 @@
-import { createUserToken } from "@/app/lib/data/user";
 import Title from "@/app/ui/title";
-import { auth } from "@/auth";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { randomUUID } from "crypto";
-import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
+import { Session } from "@/lib/auth-client";
+import { headers } from "next/headers";
+import Link from "next/link";
 
 export default async function UserPage({}) {
-  const session = await auth();
-  if (!session || !session?.user) return null;
+  const session: Session | null = await auth.api.getSession({
+    headers: await headers(),
+  });
 
-  async function resetPassword() {
-    "use server";
-    const emailToken = randomUUID();
-    await createUserToken(session!.user!.email!, emailToken);
-    redirect(`/forgot-password/${emailToken}?type=reset`);
-  }
+  if (!session?.user) return null;
 
   return (
     <div className="flex flex-col gap-6 w-full items-center">
@@ -24,9 +19,7 @@ export default async function UserPage({}) {
         <Label>Email</Label>
         <p>{session.user.email}</p>
       </div>
-      <form action={resetPassword}>
-        <Button type="submit">Reset Password</Button>
-      </form>
+      <Link href={`/user/${session.user.id}/change-password`}>Reset Password</Link>
     </div>
   );
 }

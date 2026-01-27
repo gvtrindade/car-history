@@ -9,12 +9,12 @@ const resend = new Resend(apiKey);
 
 export async function sendEmail(emailData: EmailData) {
   try {
-    const { email, subject } = emailData;
+    const { to, subject } = emailData;
     const templateNode = getTemplate(emailData);
 
     const { data, error } = await resend.emails.send({
       from: `CarHistory <${senderAddress}>`,
-      to: [email],
+      to: [to],
       subject: subject,
       react: templateNode as React.ReactElement,
     });

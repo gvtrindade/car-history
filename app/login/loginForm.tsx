@@ -1,18 +1,20 @@
 "use client";
 
-import { authenticate } from "@/app/lib/action/auth";
+import { signIn } from "@/app/lib/action/auth";
 import { getErrorMessage } from "@/app/lib/util";
 import { TextField } from "@/app/ui/FormFields/TextField";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import { authClient } from "@/lib/auth-client";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
   password: z.string(),
 });
 
@@ -27,11 +29,34 @@ export default function LoginForm() {
     },
   });
 
+  const router = useRouter();
+
   async function submitForm(values: SchemaProps) {
-    try {
-      await authenticate(values);
-    } catch (error) {
-      toast(getErrorMessage(error));
+    const parsedCredentials = z
+      .object({
+        email: z.email(),
+        password: z.string(),
+      })
+      .safeParse(values);
+
+    if (parsedCredentials.success) {
+      const { email, password } = parsedCredentials.data;
+      await authClient.signIn.email(
+        {
+          email,
+          password,
+          rememberMe: true,
+        },
+        {
+          onSuccess: async () => {
+            router.push("/");
+            router.refresh();
+          },
+          onError: (ctx) => {
+            toast(ctx.error.message);
+          },
+        },
+      );
     }
   }
 

@@ -9,16 +9,25 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { auth } from "@/lib/auth";
 import { HomeIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
-import { Session } from "next-auth";
+import { AvatarImage } from "@radix-ui/react-avatar";
+import { headers } from "next/headers";
 import Link from "next/link";
+import { getCarsByUser } from "../lib/action/car";
+import { Session } from "@/lib/auth-client";
 
-type Props = {
-  session: Session;
-  cars: Car[];
-};
+export default async function AppSidebar() {
+  const session: Session | null = await auth.api.getSession({
+    headers: await headers(),
+  });
 
-export default async function AppSidebar({ session, cars }: Props) {
+  let cars: Car[] = [];
+
+  if (session?.user) {
+    cars = await getCarsByUser(session.user.id);
+  }
+
   return (
     <Sidebar>
       <SidebarHeader>
@@ -28,7 +37,7 @@ export default async function AppSidebar({ session, cars }: Props) {
       </SidebarHeader>
 
       <SidebarContent>
-        {session?.user !== undefined ? (
+        {session?.user ? (
           <SidebarMenu className="flex flex-col gap-2 mt-6">
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
@@ -69,8 +78,11 @@ export default async function AppSidebar({ session, cars }: Props) {
               <div className="flex justify-around mt-4">
                 <Link href={`/user/${session.user.id}`}>
                   <Avatar>
+                    <AvatarImage
+                      src={session.user.image!}
+                    />
                     <AvatarFallback>
-                      {session.user.email![0].toUpperCase()}
+                      {session.user.email[0].toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                 </Link>

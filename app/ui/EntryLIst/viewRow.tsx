@@ -6,8 +6,8 @@ import { getErrorMessage, includeZero } from "@/app/lib/util";
 import Modal from "@/app/ui/Modal";
 import { Button } from "@/components/ui/button";
 import { TableCell } from "@/components/ui/table";
+import { authClient } from "@/lib/auth-client";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -27,7 +27,7 @@ export default function ViewRow({
 }: Props) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const { data: session } = useSession();
+  const { data: session } = authClient.useSession();
 
   async function confirmDelete(entry: Entry) {
     try {

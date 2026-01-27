@@ -11,7 +11,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
-  name: z.string().min(4, { message: "Car name must have at least 4 letters" }),
+  name: z.string().min(4, {
+      error: "Car name must have at least 4 letters"
+}),
   model: z.string(),
   year: z.coerce.number(),
   brand: z.string(),

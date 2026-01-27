@@ -6,9 +6,9 @@ import CarSelect from "@/app/ui/carSelect";
 import EntryForm from "@/app/ui/entryForm";
 import ExportButton from "@/app/ui/exportButton";
 import Title from "@/app/ui/title";
-import { auth } from "@/auth";
+import { auth } from "@/lib/auth";
 import { Metadata } from "next";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 
 export const metadata: Metadata = {
   title: "Home - Car History",
@@ -19,7 +19,9 @@ type Props = {
 };
 
 export default async function Home({ searchParams }: Props) {
-  const session = await auth();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
   if (!session?.user) return null;
 
   const cookieStore = await cookies();

@@ -2,7 +2,6 @@
 
 import { Entry } from "@/app/lib/definitions";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { SessionProvider } from "next-auth/react";
 import { useState } from "react";
 import FormRow from "./formRow";
 import ViewRow from "./viewRow";
@@ -17,7 +16,7 @@ export default function EntryRow({ entry, key, hideDate }: Props) {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
-    <SessionProvider refetchOnWindowFocus={false}>
+    <>
       <TableRow key={key}>
         <ViewRow
           entry={entry}
@@ -33,6 +32,6 @@ export default function EntryRow({ entry, key, hideDate }: Props) {
           </TableCell>
         </TableRow>
       )}
-    </SessionProvider>
+    </>
   );
 }

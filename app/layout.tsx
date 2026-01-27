@@ -1,8 +1,5 @@
 import "@/app/globals.css";
-import { getCarsByUser } from "@/app/lib/action/car";
-import { Car } from "@/app/lib/definitions";
 import AppSidebar from "@/app/ui/appSidebar";
-import { auth } from "@/auth";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
@@ -31,20 +28,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
-
-  let cars: Car[] = [];
-  if (session?.user?.id) {
-    cars = await getCarsByUser(session.user.id);
-  }
-
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SidebarProvider defaultOpen={false}>
-          <AppSidebar session={session!} cars={cars} />
+          <AppSidebar />
 
           <main className="w-full pb-10">
             <SidebarTrigger />

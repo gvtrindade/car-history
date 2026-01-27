@@ -6,9 +6,11 @@ import {
 } from "@/app/lib/action/entry";
 import { Car } from "@/app/lib/definitions";
 import Title from "@/app/ui/title";
-import { auth } from "@/auth";
 import { Separator } from "@/components/ui/separator";
+import { auth } from "@/lib/auth";
+import { Session } from "@/lib/auth-client";
 import { Metadata } from "next";
+import { headers } from "next/headers";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -18,7 +20,10 @@ export const metadata: Metadata = {
 type Params = Promise<{ carId: string }>;
 
 export default async function CarPage({ params }: { params: Params }) {
-  const session = await auth();
+  const session: Session | null = await auth.api.getSession({
+    headers: await headers(),
+  });
+
   if (!session?.user) return null;
 
   const { carId } = await params;

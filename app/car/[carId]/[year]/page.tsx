@@ -3,8 +3,10 @@ import { Car } from "@/app/lib/definitions";
 import EntryList from "@/app/ui/EntryLIst/entryList";
 import EntryForm from "@/app/ui/entryForm";
 import Title from "@/app/ui/title";
-import { auth } from "@/auth";
+import { auth } from "@/lib/auth";
+import { Session } from "@/lib/auth-client";
 import { Metadata } from "next";
+import { headers } from "next/headers";
 
 export const metadata: Metadata = {
   title: "Expenses",
@@ -13,7 +15,10 @@ export const metadata: Metadata = {
 type Params = Promise<{ carId: string; year: number }>;
 
 export default async function YearEntries({ params }: { params: Params }) {
-  const session = await auth();
+  const session: Session | null = await auth.api.getSession({
+    headers: await headers(),
+  });
+
   if (!session?.user) return null;
 
   const { carId, year } = await params;

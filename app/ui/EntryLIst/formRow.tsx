@@ -10,18 +10,20 @@ import { TextField } from "@/app/ui/FormFields/TextField";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { authClient } from "@/lib/auth-client";
 
 const formSchema = z.object({
   date: z.string(),
   description: z
     .string()
-    .min(3, { message: "The description should have at least 3 characters" }),
+    .min(3, {
+        error: "The description should have at least 3 characters"
+    }),
   odometer: z.coerce.number(),
   place: z.string().optional(),
   tags: z.string().optional(),
@@ -34,7 +36,7 @@ type Props = { entry: Entry; setIsEditing: (state: boolean) => void };
 
 export default function FormRow({ entry, setIsEditing }: Props) {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session } = authClient.useSession();
 
   const form = useForm<SchemaProps>({
     resolver: zodResolver(formSchema),

@@ -1,7 +1,7 @@
-import AddForm from "@/app/add-car/addForm";
 import Title from "@/app/ui/title";
-import { auth } from "@/lib/auth";
+import ChangePasswordForm from "./changePasswordForm";
 import { Session } from "@/lib/auth-client";
+import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
 export default async function Page() {
@@ -12,10 +12,9 @@ export default async function Page() {
   if (!session?.user) return null;
 
   return (
-    <div className="w-2/3 mx-auto">
-      <Title>Add car</Title>
-
-      <AddForm userId={session.user.id} className="mt-6" />
+    <div className="flex flex-col gap-8">
+      <Title>Reset Password</Title>
+      <ChangePasswordForm />
     </div>
   );
 }

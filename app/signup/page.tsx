@@ -8,12 +8,15 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z
   .object({
-    email: z.string().email({ message: "Invalid email address" }),
+    email: z.email({
+      message: "Invalid email address",
+    }),
     password: z
       .string()
       .min(8, { message: "Password must be at least 8 characters long" })
@@ -28,7 +31,7 @@ const formSchema = z
     (values) => {
       return values.password === values.passwordConfirm;
     },
-    { message: "Passwords do not match", path: ["confirmPassword"] }
+    { path: ["passwordConfirm"], message: "Passwords do not match" },
   );
 
 type SchemaProps = z.infer<typeof formSchema>;
@@ -44,43 +47,109 @@ export default function Page() {
     },
   });
 
+  const [hasSignedUp, setHasSignedUp] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [isResending, setIsResending] = useState(false);
+
+  useEffect(() => {
+    if (!hasSignedUp || timeLeft <= 0) return;
+
+    const intervalId = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [hasSignedUp, timeLeft]);
+
   const submitForm = async (values: SchemaProps) => {
     await signUp(values);
-    router.push("/signup/success");
+    setHasSignedUp(true);
+    setTimeLeft(60);
+  };
+
+  const handleResendEmail = async () => {
+    setIsResending(true);
+    try {
+      const values = form.getValues();
+      await signUp(values);
+      setTimeLeft(60);
+    } catch (error) {
+      console.error("Failed to resend email", error);
+    } finally {
+      setIsResending(false);
+    }
   };
 
   return (
     <div className="w-2/3 mx-auto">
-      <Title>Create User</Title>
+      {hasSignedUp ? (
+        <div className="flex flex-col gap-4 text-center items-center">
+          <Title>Success</Title>
+          <p>Thank you for signing up for Car History!</p>
+          <p>
+            A validation email has been sent to{" "}
+            <span className="font-bold">{form.getValues("email")}</span>
+          </p>
+          <p>Please check your inbox</p>
 
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(submitForm)}>
-          <div className="flex flex-col gap-6 md:w-96 md:mx-auto">
-            <TextField
-              name="email"
-              label="Email"
-              placeholder="Enter your email"
-            />
-            <TextField
-              name="password"
-              label="Password"
-              placeholder="Enter password"
-            />
-            <TextField
-              name="passwordConfirm"
-              label="Confirm Password"
-              placeholder="Confirm your password"
-            />
-
-            <div className="flex justify-center gap-6">
-              <Button type="button" onClick={() => router.back()}>
-                Back
-              </Button>
-              <Button type="submit">Sign up</Button>
-            </div>
+          <div className="mt-4">
+            <Button
+              variant="outline"
+              onClick={handleResendEmail}
+              disabled={timeLeft > 0 || isResending}
+              className="w-full sm:w-auto"
+            >
+              {timeLeft > 0
+                ? `Resend Email (${timeLeft}s)`
+                : isResending
+                  ? "Sending..."
+                  : "Resend Email"}
+            </Button>
+            {timeLeft > 0 && (
+              <p className="text-xs text-muted-foreground mt-2">
+                You can resend the code in {timeLeft} seconds.
+              </p>
+            )}
           </div>
-        </form>
-      </Form>
+        </div>
+      ) : (
+        <>
+          <Title>Create User</Title>
+
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(submitForm)}>
+              <div className="flex flex-col gap-6 md:w-96 md:mx-auto">
+                <TextField
+                  name="email"
+                  label="Email"
+                  placeholder="Enter your email"
+                />
+                <TextField
+                  name="password"
+                  label="Password"
+                  placeholder="Enter password"
+                />
+                <TextField
+                  name="passwordConfirm"
+                  label="Confirm Password"
+                  placeholder="Confirm your password"
+                />
+
+                <div className="flex justify-center gap-6">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => router.back()}
+                  >
+                    Back
+                  </Button>
+                  <Button type="submit">Sign up</Button>
+                </div>
+              </div>
+            </form>
+          </Form>
+        </>
+      )}
     </div>
   );
 }

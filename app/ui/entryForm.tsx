@@ -17,7 +17,9 @@ const formSchema = z.object({
   date: z.string(),
   description: z
     .string()
-    .min(3, { message: "The description should have at least 3 characters" }),
+    .min(3, {
+        error: "The description should have at least 3 characters"
+    }),
   odometer: z.coerce.number(),
   place: z.string().optional(),
   tags: z.string().optional(),

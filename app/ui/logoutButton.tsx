@@ -1,15 +1,22 @@
-import { signOut } from "@/auth";
-import { Button } from "@/components/ui/button";
+"use client";
 
-export default async function LogoutButton() {
-  return (
-    <form
-      action={async () => {
-        "use server";
-        await signOut();
-      }}
-    >
-      <Button type="submit">Logout</Button>
-    </form>
-  );
+import { Button } from "@/components/ui/button";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+
+export default function LogoutButton() {
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.refresh();
+          router.push("/login");
+        }
+      }
+    });
+  };
+
+  return <Button onClick={handleSignOut}>Logout</Button>;
 }

@@ -33,8 +33,8 @@ export type User = {
 };
 
 export type EmailData = {
-  email: string;
-  token: string;
+  to: string;
   subject: string;
   template: "signup" | "forgot-password";
+  url: string;
 };

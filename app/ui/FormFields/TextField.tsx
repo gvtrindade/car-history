@@ -80,7 +80,7 @@ export function TextField({
       <TextInput field={field} placeholder={placeholder} disabled={disabled} />
     );
 
-    if (name.includes("password")) {
+    if (name.toLowerCase().includes("password")) {
       inputType = (
         <PasswordInput
           field={field}

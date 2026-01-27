@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { signIn } from "next-auth/react";
+import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
 
 export default function GoogleButton() {
@@ -9,8 +9,8 @@ export default function GoogleButton() {
     setIsLoading(true);
 
     try {
-      await signIn("google", {
-        callbackUrl: "/",
+      await authClient.signIn.social({
+        provider: "google",
       });
     } catch (error) {
       console.error("Google sign in error:", error);
