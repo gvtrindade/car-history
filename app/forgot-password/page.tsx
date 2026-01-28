@@ -25,12 +25,9 @@ export default function ForgotPassword() {
   
   const [submittedEmail, setSubmittedEmail] = useState(""); 
 
-  const searchParams = useSearchParams();
-  const email = searchParams.get("email");
-
   const form = useForm<SchemaProps>({
     resolver: zodResolver(formSchema),
-    defaultValues: { email: email ? email : "" },
+    defaultValues: { email: "" },
   });
 
   useEffect(() => {
